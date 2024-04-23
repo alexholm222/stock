@@ -1,0 +1,67 @@
+.withdraw {
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: var(--color-bg-card);
+    padding: 0 20px;
+    transition: all 0.2s ease-in-out;
+    opacity: 0;
+
+    &_anim {
+        opacity: 1;
+    }
+}
+
+.header {
+    display: flex;
+    border-bottom: 1px solid #EAF0FA;
+    box-sizing: border-box;
+    height: 48px;
+    user-select: none;
+
+    p {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 16px;
+        color: #8E9AA8;
+    }
+}
+
+.field {
+    padding: 12px;
+    width: 120px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    &_2 {
+        justify-content: flex-end;
+    }
+}
+
+.pos {
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.manager {
+    padding: 12px;
+    width: 200px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.status {
+    padding: 12px;
+    width: 280px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center; 
+}

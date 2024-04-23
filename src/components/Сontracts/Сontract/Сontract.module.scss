@@ -1,0 +1,80 @@
+.contract {
+    display: flex;
+    border-bottom: 1px solid #EAF0FA;
+    box-sizing: border-box;
+    height: 74px;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+        background-color: var(--color-item-accent);
+    }
+}
+
+.supl {
+    width: 100%;
+    padding: 16px 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+
+    span {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+        color: var(--color-text-secondary);
+    }
+}
+
+.field {
+    padding: 16px 12px;
+    width: 300px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    &_2 {
+        width: 160px;
+    }
+}
+
+.status {
+    padding: 16px 12px;
+    width: 240px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.bage {
+    height: 24px;
+    width: fit-content;
+    padding: 0 8px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    background-color: #F1F4F9;
+    color: var(--color-text-secondary);
+    border-radius: 4px;
+
+    p {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 24px;
+    }
+
+    &_yellow {
+        background-color: rgba(255, 213, 0, 0.15);
+        color: #F89500;
+    }
+
+    &_green {
+        background-color: #DBF8EF;
+        color: #28A879;
+    }
+
+}

@@ -1,0 +1,116 @@
+.item {
+    display: flex;
+    height: 54px;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+    border-bottom: 1px solid #EAF0FA;
+
+
+    &:last-child {
+        border: none;
+    }
+
+    div {
+        display: flex;
+        box-sizing: border-box;
+    }
+}
+
+.supl {
+    width: 100%;
+    padding: 16px 12px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    div {
+        height: 14px;
+        width: 400px;
+        position: relative;
+    }
+}
+
+.field {
+    padding: 16px 12px;
+    width: 270px;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    div {
+        height: 14px;
+        width: 100px;
+        position: relative;
+    }
+
+    &_2 {
+        div {
+            height: 18px;
+            width: 18px;
+        }
+    }
+}
+
+.total {
+    width: 184px;
+    height: 100%;
+    flex-shrink: 0;
+    padding: 16px 12px;
+
+    div {
+        height: 14px;
+        width: 120px;
+        position: relative;
+    }
+}
+
+.position {
+    width: 191px;
+    height: 100%;
+    flex-direction: column;
+    flex-shrink: 0;
+    padding: 16px 12px;
+    cursor: pointer;
+    gap: 4px;
+
+    span {
+        height: 16px;
+        width: 31px;
+        position: relative;
+        overflow: hidden;
+    }
+
+}
+
+.position_1 {
+    height: 8px;
+    width: 171px;
+    position: relative;
+    overflow: hidden;
+}
+
+.action {
+    width: 168px;
+    
+    height: 100%;
+    flex-shrink: 0;
+    gap: 8px;
+    padding: 16px 12px;
+}
+
+
+
+
+.button {
+    position: relative;
+    width: 104px;
+    height: 32px;
+}
+
+.button_2 {
+    position: relative;
+    width: 32px;
+    height: 32px;
+}

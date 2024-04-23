@@ -1,0 +1,361 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 30;
+
+    &_anim {
+        background-color: var(--color-overlay);
+    }
+}
+
+.modal {
+    background-color: var(--color-bg-full);
+    box-shadow: 0px 0px 50px 0px rgba(129, 135, 163, 0.20);
+    border-radius: 8px;
+    padding: 32px;
+    width: 440px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease-in-out;
+    transform: scale(0.7);
+    opacity: 0;
+
+    &_anim {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    svg {
+        cursor: pointer;
+        transition: all 0.15s;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    user-select: none;
+
+    &_success {
+        margin: 16px 0 8px;
+    }
+}
+
+.tabs {
+    height: 41px;
+    padding: 5px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background-color: var(--color-bg-card);
+    margin-bottom: 20px;
+}
+
+.tab {
+    color: var(--color-text-secondary);
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.15s;
+    user-select: none;
+
+    &_active {
+        background-color: var(--color-bg-daily);
+        color: var(--color-text-primary);
+    }
+}
+
+.sub {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    font-weight: 400;
+    line-height: 18px;
+    margin-bottom: 6px;
+}
+
+.block {
+    margin-bottom: 12px;
+    overflow: hidden;
+    height: 70px;
+    transition: all 0.2s;
+
+    &_hiden {
+        height: 0;
+        opacity: 0;
+        margin: 0;
+    }
+}
+
+.input {
+    width: 100%;
+
+    padding: 12px 16px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 22px;
+    background-color: var(--color-bg-card);
+    border: 1px solid rgba(255, 255, 255, 0);
+    transition: all 0.15s ease-in-out;
+    overflow: hidden;
+
+    &_err {
+        border-color: #E75A5A;
+    }
+
+    p {
+        color: var(--color-text-secondary);
+    }
+
+    input {
+        padding: 0;
+        box-sizing: border-box;
+        height: 100%;
+        width: 100%;
+    }
+
+    &_dis {
+        width: 100%;
+
+        border-radius: 4px;
+        padding: 12px 16px;
+        background-color: var(--color-bg-disabled);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--color-text-secondary);
+        line-height: 22px;
+    }
+
+    &_hiden {
+        height: 0;
+    }
+}
+
+
+
+
+.button {
+    width: 100%;
+    height: 48px;
+    border-radius: 4px;
+    background-color: #002CFB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    letter-spacing: 0.15px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 16px;
+
+    &:hover {
+        background-color: #0028E5;
+    }
+
+    &:disabled {
+        pointer-events: none;
+        background-color: var(--color-bg-daily);
+        color: #8E9AA8;
+
+    }
+}
+
+.success {
+    width: 420px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    background-color: var(--color-bg-daily);
+    border-radius: 8px;
+    transition: all 0.2s;
+    transform: scale(0.6);
+    visibility: hidden;
+    opacity: 0;
+    text-align: center;
+
+    &_anim {
+        transform: scale(1);
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+
+    svg {
+        cursor: pointer;
+        transition: all 0.15s;
+
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+}
+
+.text {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    color: var(--color-text-secondary);
+    text-align: center;
+
+    &_err {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 32px;
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        color: #E75A5A;
+        font-size: 12px;
+        text-align: center;
+    }
+}
+
+.prompt {
+    list-style-type: none;
+    z-index: 20;
+    margin: 0;
+    height: fit-content;
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    top: 301px;
+    left: 32px;
+    position: absolute;
+    width: 376px;
+    background-color: var(--color-bg-card);
+    box-sizing: border-box;
+    box-shadow: var(--box-shadow2);
+    transition: all 0.2s;
+
+    &_open {
+        max-height: 340px;
+
+    }
+
+
+    li {
+        padding: 12px 16px;
+        width: 100%;
+        height: fit-content;
+        box-sizing: border-box;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        cursor: pointer;
+        transition: all 0.15s;
+
+        span {
+            font-size: 16px;
+        }
+
+        &:hover {
+            background-color: var(--color-tab-hover);
+        }
+
+    }
+}
+
+.check {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 12px;
+    cursor: pointer;
+
+    p {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 22px;
+        user-select: none;
+    }
+
+    &:hover {
+        div {
+            border-color: var(--color-button-accent);
+        }
+    }
+}
+
+.checkbox {
+    border-radius: 5.5px;
+    border: 2px solid var(--OutlineDark, rgba(173, 191, 223, 0.40));
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+
+    div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 88%;
+            height: 88%;
+            transform: scale(0);
+            transition-delay: 0.15s;
+            transition: all 0.15s ease-in-out;
+        }
+    }
+
+    &_check {
+        background-color: var(--color-button-accent);
+        border-color: var(--color-button-accent);
+
+        div {
+            svg {
+                transform: scale(1);
+            }
+        }
+
+    }
+}
