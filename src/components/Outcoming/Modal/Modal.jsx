@@ -33,7 +33,8 @@ const Modal = ({ setModalOpen, el }) => {
             document.body.style.overflow = "auto";
             document.body.style.paddingRight = "0";
         };
-    }, [])
+    }, []);
+
 
     const handleCloseModal = () => {
         setAnim(false);
@@ -73,7 +74,6 @@ const Modal = ({ setModalOpen, el }) => {
                     setLoad(false);
                 }, 200)
             })
-
     }
 
     const handleKeyEnter = (e) => {

@@ -1,14 +1,17 @@
 .supplier {
     display: flex;
-    border-bottom: 1px solid #EAF0FA;
+    border-bottom: 1px solid var(--color-line-border);
     box-sizing: border-box;
     height: 54px;
 }
 
 .supl {
     width: 100%;
+    
     padding: 16px 12px;
     box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
     display: flex;
     align-items: center;
 }
@@ -24,7 +27,7 @@
 
 .checkbox {
     border-radius: 5.5px;
-    border: 2px solid var(--OutlineDark, rgba(173, 191, 223, 0.40));
+    border: 2px solid rgba(173, 191, 223, 0.40);
     box-sizing: border-box;
     width: 22px;
     height: 22px;
@@ -56,7 +59,7 @@
     &_dis {
         pointer-events: none;
         cursor: default;
-        opacity: 0.6;
+        opacity: 0;
     }
 
     &_check {

@@ -28,14 +28,14 @@
         font-size: 16px;
         font-weight: 400;
         line-height: 22px;
-
+        color: var(--color-text-primary);
         &::placeholder {
             color: var(--color-text-secondary);
         }
     }
 
     &_disabled {
-        background-color: #F8FAFD;
+        opacity: 0.6;
         pointer-events: none;
 
         svg path {
@@ -43,6 +43,7 @@
         }
 
         input {
+            
             &::placeholder {
                 color: #BFCBE0;
             }

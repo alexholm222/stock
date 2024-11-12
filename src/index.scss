@@ -61,6 +61,12 @@ input {
   background: none;
   border: none;
   outline: none;
+  box-sizing: border-box;
+  color: var(--color-text-primary);
+
+  &::placeholder {
+    color: var(--color-text-secondary);
+  }
 }
 
 input::-webkit-outer-spin-button,

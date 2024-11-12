@@ -1,10 +1,13 @@
 .app {
   background-color: var(--color-bg);
   min-height: 100vh;
-  margin: 0 auto;
+ /*  margin: 0 auto; */
+  margin: 0 auto 0 300px;
   padding: 40px 0;
   max-width: 1558px;
+  min-width: 1488px;
   width: 100%;
+  overflow: hidden;
 }
 
 .title {

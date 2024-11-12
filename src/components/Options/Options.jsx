@@ -32,6 +32,7 @@ const Options = ({ payers, patterns, categories, load }) => {
     const [elDelete3, setElDelete3] = useState({});
     const [error, setError] = useState(false);
     const [errorText, setErrorText] = useState('');
+    console.log(payers)
   
     useEffect(() => {
         setTimeout(() => {
@@ -82,8 +83,8 @@ const Options = ({ payers, patterns, categories, load }) => {
                     <div className={`${s.block}`}>
                         <h2 className={s.title}>Список плательщиков</h2>
                         {!load && <div style={{ height: `${heightPayers}px` }} className={s.items}>
-                            {payers.map((el) => {
-                                return <Item key={el.id} el={el} setModal={setModalDelete} setElDelete={setElDelete} type={'payer'} setModalAddDefault={setModalAddDefault} setType={setType}/>
+                            {payers.map((el, i) => {
+                                return <Item key={el.id} i={i} el={el} setModal={setModalDelete} setElDelete={setElDelete} type={'payer'} setModalAddDefault={setModalAddDefault} setType={setType}/>
                             })}
                         </div>
                         }
@@ -100,8 +101,8 @@ const Options = ({ payers, patterns, categories, load }) => {
                     <div className={`${s.block}`}>
                         <h2 className={s.title}>Категории закупок</h2>
                         {!load && <div style={{ height: `${heightCategories}px` }} className={`${s.items} ${s.items_cat}`}>
-                            {categories.map((el) => {
-                                return <Item key={el.id} el={el} setModal={setModalDelete2} setElDelete={setElDelete2} type={'categories'} setModalAddDefault={setModalAddDefault} setType={setType}/>
+                            {categories.map((el, i) => {
+                                return <Item key={el.id} i={i} el={el} setModal={setModalDelete2} setElDelete={setElDelete2} type={'categories'} setModalAddDefault={setModalAddDefault} setType={setType}/>
                             })}
                         </div>
                         }

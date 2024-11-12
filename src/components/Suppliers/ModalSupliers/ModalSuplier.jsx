@@ -21,11 +21,13 @@ const ModalSuplier = ({ setModal }) => {
     const [err, setErr] = useState(false);
     const [promptList, setPromptList] = useState([]);
     const [prompOpen, setPrompOpen] = useState(false);
+    const [prompType, setPrompType] = useState('');
     const modalRef = useRef();
     const promptRef = useRef();
     const inputRef = useRef();
+    const inputRefFocus = useRef();
     const inputRef2 = useRef();
-    const inputRef3 = useRef();
+    const inputRef3 = useRef(); 
     const dispatch = useDispatch();
     const role = document.getElementById('root_stock').getAttribute('role');
 
@@ -49,11 +51,11 @@ const ModalSuplier = ({ setModal }) => {
             setKpp('');
             return
         }
-    }, [check])
+    }, [check]);
 
     useEffect(() => {
-        role !== 'administrator' && setCheck(true)
-    },[role])
+        inputRefFocus.current && inputRefFocus.current.focus();
+    }, [inputRefFocus]);
 
     const handleCloseModal = () => {
         setAnim(false);
@@ -103,26 +105,40 @@ const ModalSuplier = ({ setModal }) => {
 
     const handleName = (e) => {
         const value = e.target.value;
+        setPrompType('');
         setErr(false);
         setName(value);
-        setPrompOpen(true);
+        value.length > 0 && setPrompOpen(true);
         handleDaData(value);
     }
 
     const handleInn = (e) => {
         setErr(false);
-        setPrompOpen(true);
+        setPrompType('inn');
         const value = e.target.value;
         value.length <= 12 && setInn(value);
+        value.length > 0 && setPrompOpen(true);
         handleDaData(value);
+
     }
 
     const handleKpp = (e) => {
         setErr(false);
-        setPrompOpen(true);
+        setPrompType('inn');
         const value = e.target.value;
+        value.length > 0 && setPrompOpen(true);
         value.length <= 9 && setKpp(value);
         handleDaData(value);
+    }
+
+    const handleFocusName = () => {
+        setPrompType('');
+        name.length > 0 && setPrompOpen(true);
+    }
+
+    const handleFocusInn = () => {
+        setPrompType('inn');
+        inn.length > 0 && setPrompOpen(true);
     }
 
     const handleCheck = () => {
@@ -156,23 +172,24 @@ const ModalSuplier = ({ setModal }) => {
                 </div>
                 <p className={s.sub}>Поставщик</p>
                 <div ref={inputRef} className={s.input}>
-                    <input onFocus={() => { setPrompOpen(true) }} onChange={handleName} value={name || ''} type='text' className={s.input}></input>
+                    <input ref={inputRefFocus} onFocus={handleFocusName} onChange={handleName} value={name || ''} type='text' className={s.input}></input>
                 </div>
-                <div className={s.check}>
-                    <div onClick={handleCheck} className={`${s.checkbox} ${check && s.checkbox_check} ${role !== 'administrator' && s.checkbox_dis}`}>
+                {role == 'administrator' && <div className={`${s.check}`}>
+                    <div onClick={handleCheck} className={`${s.checkbox} ${check && s.checkbox_check}`}>
                         <div>
                             <IconCheck />
                         </div>
                     </div>
                     <p>Поставщик без ИНН</p>
                 </div>
+                }
                 <div className={s.container}>
                     <div className={s.block}>
                         <p className={s.sub}>
                             ИНН
                         </p>
 
-                        <input ref={inputRef2} onFocus={() => { setPrompOpen(true) }} disabled={check ? true : false} onChange={handleInn} value={inn || ''} type='number' className={s.input}></input>
+                        <input ref={inputRef2} onFocus={handleFocusInn} disabled={check ? true : false} onChange={handleInn} value={inn || ''} type='number' className={s.input}></input>
 
                     </div>
                     <div className={s.block}>
@@ -180,13 +197,13 @@ const ModalSuplier = ({ setModal }) => {
                             КПП
                         </p>
 
-                        <input ref={inputRef3} onFocus={() => { setPrompOpen(true) }} disabled={check ? true : false} onChange={handleKpp} value={kpp || ''} type='number' className={s.input}></input>
+                        <input ref={inputRef3} onFocus={handleFocusInn} disabled={check ? true : false} onChange={handleKpp} value={kpp || ''} type='number' className={s.input}></input>
 
                     </div>
 
-                    <ul ref={promptRef} className={`${s.prompt} ${prompOpen && s.prompt_open}`}>
-                        {role == 'administrator' && promptList?.map((el) => {
-                            return <li key={el.data.inn} onClick={handleSelectCompany}>
+                    <ul ref={promptRef} className={`${s.prompt} ${prompType == 'inn' && s.prompt_2} ${role !== 'administrator' && s.prompt_inn} ${prompOpen && s.prompt_open}`}>
+                        {promptList?.map((el) => {
+                            return <li id={`${el.data.inn}${el.data.kpp}`} key={el.data.inn} onClick={handleSelectCompany}>
                                 <p className='company__name'>{el.value}</p>
                                 <div><span>ИНН: <span className='company__inn'>{el.data.inn}</span></span> <span>КПП: <span className='company__kpp'>{el.data.kpp}</span></span></div>
                             </li>

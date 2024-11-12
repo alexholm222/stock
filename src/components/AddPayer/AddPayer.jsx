@@ -25,12 +25,19 @@ const AddPayer = ({ setModal }) => {
     const promptRef = useRef();
     const inputRef = useRef();
     const inputRef2 = useRef();
+    const inputRefFocus = useRef();
+    const inputRefFocus2 = useRef();
     const dispatch = useDispatch();
+    console.log(paymentType)
 
     //анимация при открытии страницы
     useEffect(() => {
         setAnim(true)
     }, []);
+
+    useEffect(() => {
+        paymentType == 'nal' && setPromptList([])
+    }, [paymentType])
 
     //Фиксация окна при открытии модалки
     useEffect(() => {
@@ -63,7 +70,12 @@ const AddPayer = ({ setModal }) => {
             setDisabled(true);
             return
         }
-    }, [paymentType, nameType, name, inn])
+    }, [paymentType, nameType, name, inn]);
+
+    useEffect(() => {
+        inputRefFocus.current && inputRefFocus.current.focus();
+        inputRefFocus2.current && inputRefFocus2.current.focus();
+    }, [inputRefFocus, inputRefFocus2, paymentType]);
 
 
     //выбор типа плательщика
@@ -82,7 +94,7 @@ const AddPayer = ({ setModal }) => {
 
     const closeModal = (e) => {
         e.stopPropagation()
-        if (modalRef.current && !modalRef.current.contains(e.target)) {
+        if (modalRef.current && !modalRef.current.contains(e.target) && !prompOpen) {
             handleCloseModal();
             return
         }
@@ -162,11 +174,10 @@ const AddPayer = ({ setModal }) => {
     useEffect(() => {
         document.addEventListener('mousedown', closeModal);
         return () => document.removeEventListener('mousedown', closeModal);
-    }, []);
+    }, [prompOpen]);
 
     return (
         <div className={`${s.overlay} ${anim && s.overlay_anim}`}>
-
             <div ref={modalRef} className={`${s.modal} ${anim && !success && s.modal_anim}`}>
                 <div className={s.header}>
                     <h2 className={s.title}>
@@ -183,7 +194,7 @@ const AddPayer = ({ setModal }) => {
                 {paymentType == 'nal' && <div className={`${s.block}`}>
                     <p className={s.sub}>Название типа оплаты</p>
                     <div className={s.input}>
-                        <input onChange={handleNameType} value={nameType || ''} placeholder='Не указано'></input>
+                        <input ref={inputRefFocus2} onChange={handleNameType} value={nameType || ''} placeholder='Не указано'></input>
                     </div>
                 </div>
                 }
@@ -199,7 +210,7 @@ const AddPayer = ({ setModal }) => {
                 <div className={`${s.block} ${paymentType == 'nal' && s.block_hiden}`}>
                     <p className={s.sub}>Название организации плательщика</p>
                     <div ref={inputRef} className={s.input}>
-                        <input onFocus={() => { setPrompOpen(true) }} onChange={handleName} value={name || ''} placeholder='Не указано'></input>
+                        <input ref={inputRefFocus} onFocus={() => { setPrompOpen(true) }} onChange={handleName} value={name || ''} placeholder='Не указано'></input>
                     </div>
                 </div>
 

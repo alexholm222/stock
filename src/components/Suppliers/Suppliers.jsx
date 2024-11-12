@@ -12,6 +12,7 @@ const Suppliers = ({ modalType, setModalType, vendors, load }) => {
     const [listLength, setListLength] = useState(48);
     const [sort, setSort] = useState('');
     const listRef = useRef();
+    const role = document.getElementById('root_stock').getAttribute('role');
 
     useEffect(() => {
         setTimeout(() => {
@@ -78,9 +79,10 @@ const Suppliers = ({ modalType, setModalType, vendors, load }) => {
                 <div className={s.field}>
                     <p>КПП</p>
                 </div>
-                <div className={s.field}>
-                    <p>Не учитывать в расходах компании</p>
+                {role == 'administrator' && <div className={s.field}>
+                    <p>{/* Не учитывать в расходах компании */}Учет по актам вместо платежей</p>
                 </div>
+                }
             </div>
             {!load && <div className={s.container}>
                 {vendors.slice(0, listLength).map((el, i) =>

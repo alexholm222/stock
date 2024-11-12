@@ -19,16 +19,15 @@
         font-size: 14px;
         font-weight: 400;
         line-height: 16px;
-        color: #8E9AA8;
+        color: var(--color-text-header);
     }
 
-    border-bottom: 1px solid #EAF0FA;
+    border-bottom: 1px solid var(--color-line-border);
     display: flex;
     height: 48px;
     box-sizing: border-box;
 
     div {
-        padding: 20px 12px 12px 12px;
         display: flex;
         height: 100%;
         align-items: center;
@@ -39,10 +38,12 @@
 .number {
     width: 54px;
     flex-shrink: 0;
+    padding: 20px 12px 12px 12px;
 }
 
 .name {
     width: 100%;
+    padding: 20px 12px 12px 12px;
 
     svg {
 
@@ -61,14 +62,25 @@
 .outgo {
     width: 140px;
     flex-shrink: 0;
+    padding: 20px 12px 12px 12px;
 }
 
 .total {
     width: 184px;
     flex-shrink: 0;
+    padding: 20px 12px 12px 12px;
+    margin-right: 100px;
+
+    div {
+        margin-left: 2px;
+        width: 76px;
+        height: 10px;
+        border-radius: 2px;
+    }
 }
 
 .position {
+    padding: 20px 12px 12px 12px;
     width: 191px;
     flex-shrink: 0;
     cursor: pointer;
@@ -88,6 +100,7 @@
 }
 
 .action {
+    padding: 20px 12px 12px 12px;
     width: 168px;
     flex-shrink: 0;
 }
@@ -99,11 +112,14 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    transition: all 3s ease-in-out;
+    /*  transition: all 3s ease-in-out; */
 
     &_sort {
         user-select: none;
         cursor: pointer;
+        flex-shrink: 0;
+        margin: 0;
+        padding: 0;
     }
 }
 

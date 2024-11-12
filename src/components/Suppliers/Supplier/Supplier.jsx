@@ -4,24 +4,24 @@ import { ReactComponent as IconCheck } from '../../../image/icon/iconCheck.svg';
 //API
 import { updateVendorIgnor } from '../../../Api/Api';
 
-const Supplier = ({el}) => {
-    const [check, setCheck] = useState(el.act == 0 ? true : false);
+const Supplier = ({ el }) => {
+    const [check, setCheck] = useState(el.act == 0 ? false : true);
     const role = document.getElementById('root_stock').getAttribute('role');
 
     const handleCheck = () => {
         check ? setCheck(false) : setCheck(true)
-        if(check) {
+        if (check) {
             updateVendorIgnor(el.id, false)
-            .then(res => {
-                console.log(res)
-                setCheck(false)
-            })
+                .then(res => {
+                    console.log(res)
+                    setCheck(false)
+                })
         } else {
             updateVendorIgnor(el.id, true)
-            .then(res => {
-                console.log(res)
-                setCheck(true)
-            })
+                .then(res => {
+                    console.log(res)
+                    setCheck(true)
+                })
         }
     }
 
@@ -31,18 +31,19 @@ const Supplier = ({el}) => {
                 <p>{el.name}</p>
             </div>
             <div className={s.field}>
-                <p>{!el.inn || el.inn == ''  ? '-' : el.inn}</p>
+                <p>{!el.inn || el.inn == '' ? '-' : el.inn}</p>
             </div>
             <div className={s.field}>
-                <p>{!el.kpp || el.kpp == ''  ? '-' : el.kpp}</p>
+                <p>{!el.kpp || el.kpp == '' ? '-' : el.kpp}</p>
             </div>
-            <div className={s.field}>
+            {role == 'administrator' && <div className={s.field}>
                 <div onClick={handleCheck} className={`${s.checkbox} ${check && s.checkbox_check} ${role !== 'administrator' && s.checkbox_dis}`}>
                     <div>
                         <IconCheck />
                     </div>
                 </div>
             </div>
+            }
         </div>
     )
 };

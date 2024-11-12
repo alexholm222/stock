@@ -4,10 +4,11 @@ import { ReactComponent as IconSuccess } from '../../../image/icon/iconSuccess.s
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUpdateBalance } from '../../../store/reducer/update/slice';
+import LoaderButton from '../../LoaderButton/LoaderButton';
 //API
 import { sendWithdrawal, sendOutcoming } from '../../../Api/Api';
 
-const Modal = ({ type, setIdModal, el }) => {
+const Modal = ({ type, setIdModal, el, outcoming }) => {
     const [anim, setAnim] = useState(false);
     const [comment, setComment] = useState('');
     const [num, setNum] = useState('');
@@ -16,6 +17,7 @@ const Modal = ({ type, setIdModal, el }) => {
     const [success, setSuccess] = useState(false);
     const [load, setLoad] = useState(false);
     const modalRef = useRef();
+    const inputRef = useRef();
     const textAreaRef = useRef();
     const dispatch = useDispatch();
 
@@ -33,7 +35,11 @@ const Modal = ({ type, setIdModal, el }) => {
             document.body.style.overflow = "auto";
             document.body.style.paddingRight = "0";
         };
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        inputRef.current && inputRef.current.focus();
+    }, [inputRef])
 
     const handleCloseModal = () => {
         setAnim(false);
@@ -62,41 +68,44 @@ const Modal = ({ type, setIdModal, el }) => {
 
     }
 
+
     const handleConfirm = () => {
         setErrSend(false)
         setLoad(true)
         if (type == 1) {
             sendWithdrawal(el.stock_id, num)
                 .then(res => {
-                    console.log(res);
                     setSuccess(true);
                     dispatch(setUpdateBalance());
                 })
                 .catch(err => {
-                    const message = err.response?.data.message;
-                    console.log(message.slice(0, 25))
+                    const data = err.response?.data;
+                    console.log(data)
                     setLoad(false)
-                    if (message.slice(0, 25) == "Not enough items in stock") {
-                        setErrSend(`Изъять можно ${el.quantity - message.slice(-3)} ${el.unit}, запрошенно к списанию ${message.slice(-3)} ${el.unit}`);
-                    } else {
-                        setErrSend('При изъятии произошла ошибка, попробуй еще раз');
-                    }
+                        if (data.sum_quantity_withdrawal) {
+                            setErrSend(`Изъять можно ${data.all_quantity - data.sum_quantity_withdrawal} ${el.unit}, запрошенно к списанию ${data.sum_quantity_withdrawal} ${el.unit}`);
+                        } else {
+                            setErrSend('При изъятии произошла ошибка, попробуй еще раз');
+                        } 
                 })
         }
 
         if (type == 2) {
             sendOutcoming(el.stock_id, num, comment)
                 .then(res => {
+                    const id = res.data.new_stock_stat.stock_id;
+                    const statStockId = outcoming.find(el => el.stock_id == id);
+                    console.log(statStockId)
                     console.log(res);
                     setSuccess(true);
                     dispatch(setUpdateBalance());
                 })
                 .catch(err => {
-                    const message = err.response?.data.message;
-                    console.log(message.slice(0, 25))
+                    const data = err.response?.data;
+                    console.log(data)
                     setLoad(false)
-                    if (message.slice(0, 25) == "Not enough items in stock") {
-                        setErrSend(`Уже запрошенно к списанию ${message.slice(-3)} ${el.unit}, еще можно списать ${el.quantity - message.slice(-3)}`);
+                    if (data.sum_quantity_withdrawal) {
+                        setErrSend(`Уже запрошенно к списанию ${data.sum_quantity_withdrawal} ${el.unit}, еще можно списать ${data.all_quantity - data.sum_quantity_withdrawal} ${el.unit}`);
                     } else {
                         setErrSend('При изъятии произошла ошибка, попробуй еще раз');
                     }
@@ -143,7 +152,7 @@ const Modal = ({ type, setIdModal, el }) => {
                             {type == 2 && 'К списанию'}
                         </p>
                         <div className={`${s.input} ${err && s.input_err}`}>
-                            <input type='number' onChange={handleChangeNum} value={num || ''} className={s.input}></input>
+                            <input ref={inputRef}  type='number' onChange={handleChangeNum} value={num || ''} className={s.input}></input>
                             <p>{el.unit}</p>
                         </div>
                     </div>
@@ -152,8 +161,12 @@ const Modal = ({ type, setIdModal, el }) => {
                     <p className={s.sub}>Основание</p>
                     <textarea ref={textAreaRef} onChange={handleComment} placeholder='Написать основание'></textarea>
                 </div>}
-                {type == 1 && <button disabled={err || num == '' || load ? true : false} onClick={handleConfirm} className={s.button}>Подтвердить</button>}
-                {type == 2 && <button disabled={err || num == '' || load ? true : false} onClick={handleConfirm} className={s.button}>Списать</button>}
+                {type == 1 && <button disabled={err || num == '' || load ? true : false} onClick={handleConfirm} className={s.button}>Подтвердить
+                    
+                </button>}
+                {type == 2 && <button disabled={err || num == '' || load ? true : false} onClick={handleConfirm} className={s.button}>Списать
+                    
+                </button>}
                 <span className={s.text_err}>{errSend}</span>
             </div>
 

@@ -42,7 +42,7 @@ export const sendWithdrawal = (id, quantity) => {
         method: 'post',
         mode: "cors",
         url: `${baseUrl}api/purchases/stock/remains`,
-        data: { type: 'withdrawal', stock_id: id, quantity: quantity }
+        data: { type: 'outcoming', stock_id: id, quantity: quantity }
     })
 }
 
@@ -51,7 +51,7 @@ export const sendOutcoming = (id, quantity, comment) => {
         method: 'post',
         mode: "cors",
         url: `${baseUrl}api/purchases/stock/remains`,
-        data: { type: 'outcoming', stock_id: id, quantity: quantity, comment: comment }
+        data: { type: 'withdrawal', stock_id: id, quantity: quantity, comment: comment }
     })
 }
 
@@ -74,7 +74,7 @@ export const updateVendorIgnor = (id, state) => {
         method: 'patch',
         mode: "cors",
         url: `${baseUrl}api/purchases/stock/vendors`,
-        data: { stock_vendor_id: id, ignore: state }
+        data: { stock_vendor_id: id, activate: state }
     })
 }
 
@@ -135,12 +135,12 @@ export const getCategories = () => {
     return instanceWithToken.get(`${baseUrl}api/purchases/stock/settings/categories`);
 }
 
-export const addPayer = (name, inn, payment_type, by_default) => {
+export const addPayer = (id, name, inn, payment_type, by_default) => {
     return instanceWithToken({
         method: 'post',
         mode: "cors",
         url: `${baseUrl}api/purchases/stock/settings/payers`,
-        data: { name, inn, payment_type, by_default }
+        data: { id, name, inn, payment_type, by_default }
     })
 }
 

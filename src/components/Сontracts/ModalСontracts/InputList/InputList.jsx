@@ -6,8 +6,16 @@ import { handleFilter, handleFilterObject } from '../../../../utils/filter';
 const InputList = ({ open, setOpen, value, setValue, inputRef, list, err, setErr, disabled, type }) => {
     const [listInput, setListInput] = useState(list || []);
     const [valueText, setValueText] = useState(value?.name || []);
+    const [lastValue, setLastValue] = useState({});
     const [count, setCount] = useState(0)
     const itemRef = useRef();
+    const itemRef2 = useRef();
+  console.log(lastValue)
+    useEffect(() => {
+        if(value.id) {
+            setLastValue(value)
+        }
+    },[value])
 
     const handleOpenList = () => {
         if (open) {
@@ -57,7 +65,7 @@ const InputList = ({ open, setOpen, value, setValue, inputRef, list, err, setErr
             filterList.length > 0 ? setOpen(true) : setOpen(false);
         })
     }
-  
+
     const handleFocusItem = (e) => {
         const items = inputRef.current.querySelectorAll(`li`);
         const itemsLength = items.length;
@@ -66,8 +74,8 @@ const InputList = ({ open, setOpen, value, setValue, inputRef, list, err, setErr
             setOpen(false);
             return
         }
-        
-    
+
+
         if (e.keyCode === 40 && count < itemsLength) {
             e.preventDefault();
             items[count].focus();
@@ -90,7 +98,7 @@ const InputList = ({ open, setOpen, value, setValue, inputRef, list, err, setErr
             items[count - 1].focus();
             setCount(count - 1)
             return
-        }    
+        }
     }
 
     const handleFocusInput = () => {
@@ -98,13 +106,42 @@ const InputList = ({ open, setOpen, value, setValue, inputRef, list, err, setErr
         setCount(0)
     }
 
+    const handleBlurInput = (e) => {
+     
+        if (!value.id && inputRef.current && !inputRef.current.contains(e.target) && listInput[0] && type !== 'object') {
+            setValue(listInput[0]);
+            setValueText(listInput[0].name);
+            return
+        }
+
+        if (!value.id && inputRef.current && !inputRef.current.contains(e.target) && listInput[0] && type == 'object') {
+            setValue(lastValue);
+            setValueText(lastValue.name);
+            return
+        }
+     
+
+        if (!value.id && inputRef.current && !inputRef.current.contains(e.target) && !listInput[0]) {
+            setValue(lastValue);
+            setValueText(lastValue.name);
+            return
+        }
+    }
+
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleBlurInput);
+
+        return () => document.removeEventListener('mousedown', handleBlurInput);
+    }, [listInput, value, type]);
+
 
     return (
         <div ref={inputRef} onKeyDown={handleFocusItem} className={`${s.input} ${type == 'object' && s.input_object} ${open && s.input_open} ${err && s.input_error} ${disabled && s.input_disabled}`}>
-            {type !== 'object' && <input disabled={disabled} onKeyDown={handleChange} onFocus={handleFocusInput} onChange={handleChange} value={valueText || ''} type='text'></input>}
+            {type !== 'object' && <input ref={itemRef2} disabled={disabled} onKeyDown={handleChange} onFocus={handleFocusInput} onChange={handleChange} value={valueText || ''} type='text'></input>}
             {type == 'object' &&
                 <div className={s.block}>
-                    <input disabled={disabled} onKeyDown={handleChange} onFocus={handleFocusInput} onChange={handleChange} value={valueText || ''} type='text'></input>
+                    <input ref={itemRef2} disabled={disabled} onKeyDown={handleChange} onFocus={handleFocusInput} onChange={handleChange} value={valueText || ''} type='text'></input>
                     {value?.inn && <div onClick={handleOpenList} className={s.block_inn}>
                         <span className={s.inn}>ИНН: {value?.inn ? value?.inn : ''}</span> <span>КПП: {value?.kpp ? value?.kpp : 'отсутсвует'}</span>
                     </div>

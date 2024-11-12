@@ -23,6 +23,7 @@ const AddPattern = ({ setModal }) => {
     const [list, setList] = useState(false);
     const [list2, setList2] = useState(false);
     const modalRef = useRef();
+    const inputRef = useRef();
     const listRef = useRef();
     const listRef2 = useRef();
     const dispatch = useDispatch();
@@ -56,7 +57,11 @@ const AddPattern = ({ setModal }) => {
         } else {
             setDisabled(false)
         }
-    }, [name, maxPrice, outgo, unit])
+    }, [name, maxPrice, outgo, unit]);
+
+    useEffect(() => {
+        inputRef && inputRef.current.focus();
+    }, [inputRef])
 
     const handleCloseModal = () => {
         setAnim(false);
@@ -151,7 +156,7 @@ const AddPattern = ({ setModal }) => {
                 <div className={s.block}>
                     <p className={s.sub}>Наименование позиции</p>
                     <div className={s.input}>
-                        <input onChange={handleName} value={name || ''} placeholder='Укажите позицию'></input>
+                        <input ref={inputRef} onChange={handleName} value={name || ''} placeholder='Укажите позицию'></input>
                     </div>
                 </div>
 

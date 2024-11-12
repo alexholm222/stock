@@ -63,7 +63,7 @@ const File = ({ file, files, setFiles, setOldFiles, id, type, disabled }) => {
                 <div onClick={handleOpenFile}>
                     <img src={iconFolder}></img>
                     <p>
-                        {type == 'existing' && file.slice(28)}
+                        {type == 'existing' && file.split('/').pop()}
                         {type !== 'existing' && file?.name}
                     </p>
                 </div>
@@ -101,7 +101,7 @@ const ModalСontracts = ({ setModal, payers, vendors, vendor, payer, el, type, f
     const [buyer, setBuyer] = useState(type == 'existing' ? payer : payers[0]);
     const [bayerListOpen, setBayerListOpen] = useState(false);
     const [bayerListError, setBayerListError] = useState(false);
-    const [provider, setProvider] = useState(type == 'existing' ? vendor : vendors[0]);
+    const [provider, setProvider] = useState(type == 'existing' ? vendor : {});
     const [providerListOpen, setProviderListOpen] = useState(false);
     const [providerListError, setProviderListError] = useState(false);
     const [check, setCheck] = useState(false);
@@ -165,7 +165,7 @@ const ModalСontracts = ({ setModal, payers, vendors, vendor, payer, el, type, f
 
 
     useEffect(() => {
-        if (provider && buyer && number && (files.length > 0 || filesExist.length > 0)) {
+        if (provider.id && buyer.id && number && (files.length > 0 || filesExist.length > 0)) {
             setButtonDisabled(false);
         } else {
             setButtonDisabled(true);
@@ -389,9 +389,6 @@ const ModalСontracts = ({ setModal, payers, vendors, vendor, payer, el, type, f
                     {!disabled && !load && !save && 'Сохранить'}
                     {!disabled && load && 'Сохраняем...'}
                     {save && <div>Изменения сохранены <IconDone /></div>}
-                    <div>
-                        {!disabled && load && <LoaderButton />}
-                    </div>
                 </button>}
             </div>
 

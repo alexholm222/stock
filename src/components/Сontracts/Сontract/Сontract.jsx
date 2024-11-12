@@ -44,14 +44,14 @@ const Сontract = ({ el, vendor, payer, payers, vendors }) => {
         <>
             <div onClick={handleOpenModal} className={s.contract}>
                 <div className={s.supl}>
-                    <p>{vendor.name}</p>
-                    <span>ИНН {vendor.inn}  КПП {vendor.kpp}</span>
+                    <p>{vendor?.name}</p>
+                    <span>ИНН {vendor?.inn}  КПП {vendor?.kpp}</span>
                 </div>
                 <div className={s.field}>
-                    <p>{payer.name}</p>
+                    <p>{payer?.name}</p>
                 </div>
                 <div className={s.field}>
-                    <p>{el.contract_number}</p>
+                    <p>{el?.contract_number}</p>
                 </div>
                 <div className={`${s.field} ${s.field_2}`}>
                     <p>{el.start_date ? dateContract(el.start_date) : ''}</p>

@@ -16,8 +16,9 @@ const AddCategory = ({ setModal }) => {
     const [disabled, setDisabled] = useState(true);
     const [check, setCheck] = useState(false);
     const modalRef = useRef();
+    const inputRef = useRef();
     const dispatch = useDispatch();
-
+  
     //анимация при открытии страницы
     useEffect(() => {
         setAnim(true)
@@ -38,7 +39,11 @@ const AddCategory = ({ setModal }) => {
             setDisabled(false);
             return
         }
-    }, [name])
+    }, [name]);
+
+    useEffect(() => {
+        inputRef.current && inputRef.current.focus();
+    }, [inputRef]);
 
     const handleCloseModal = () => {
         setAnim(false);
@@ -102,7 +107,7 @@ const AddCategory = ({ setModal }) => {
                 <div className={`${s.block}`}>
                     <p className={s.sub}>Название категории</p>
                     <div className={s.input}>
-                        <input onChange={handleName} value={name || ''} placeholder='Не указано'></input>
+                        <input ref={inputRef} onChange={handleName} value={name || ''} placeholder='Не указано'></input>
                     </div>
                 </div>
 

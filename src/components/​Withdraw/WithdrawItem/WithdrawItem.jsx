@@ -1,5 +1,5 @@
 import s from './WithdrawItem.module.scss';
-import { setDate } from '../../../utils/dates';
+import { setDate2 } from '../../../utils/dates';
 import { addSpaceNumber } from '../../../utils/addSpaceNumber';
 
 const WithdrawItem = ({ el }) => {
@@ -7,7 +7,7 @@ const WithdrawItem = ({ el }) => {
     return (
         <div className={s.item}>
             <div className={s.field}>
-                <p>{setDate(el.date).dateText3}</p>
+                <p>{setDate2(el.date).dateText3}</p>
                 <span>{el.date.slice(11, 16)}</span>
             </div>
             <div className={s.pos}>
@@ -21,7 +21,7 @@ const WithdrawItem = ({ el }) => {
                 <p>{el.quantity}</p>
             </div>
             <div className={`${s.field} ${s.field_2}`}>
-                <p>{addSpaceNumber(el.sum)}</p>
+                <p>{addSpaceNumber(Math.ceil(el.sum))}</p>
             </div>
 
             <div className={s.manager}>

@@ -16,8 +16,14 @@ const Bage = ({ active, handleModalDelete }) => {
     )
 }
 
-const Item = ({ el, setModal, setElDelete, type, setModalAddDefault, setType }) => {
+const Item = ({ el, i, setModal, setElDelete, type, setModalAddDefault, setType }) => {
     const [check, setCheck] = useState(el.active);
+    const [position, setPosition] = useState(i * 60 || 0);
+
+    useEffect(() => {
+        const num = i * 60;
+        setPosition(num)
+    }, [i, el])
 
     useEffect(() => {
         setCheck(el.active)
@@ -72,7 +78,7 @@ const Item = ({ el, setModal, setElDelete, type, setModalAddDefault, setType }) 
 
     return (
         <>
-            <div className={`${s.item} ${el.by_default == 1 ? s.item_default : ""}`}>
+            <div style={{top: `${position}px`}} className={`${s.item}`}>
                 <div className={s.container}>
                     <div onClick={handleCheck} className={`${s.checkbox} ${check && s.checkbox_check} ${el.by_default == 1 && s.checkbox_default}`}>
                         <div>

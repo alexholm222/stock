@@ -4,7 +4,7 @@
     overflow: hidden;
     transition: height 0.25s ease-in-out;
     box-sizing: border-box;
-    border-bottom: 1px solid #EAF0FA;
+    border-bottom: 1px solid var(--color-line-border);
 
     &:last-child {
         border: none;
@@ -66,6 +66,8 @@
     height: 100%;
     flex-shrink: 0;
     padding: 16px 12px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .total {
@@ -73,6 +75,13 @@
     height: 100%;
     flex-shrink: 0;
     padding: 16px 12px;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 106px;
+
+    p {
+        text-align: right;
+    }
 }
 
 .position {
@@ -115,7 +124,7 @@
 }
 
 .bar {
-    background-color: #DFE5EF;
+    background-color: var(--color-bg-daily) /* #DFE5EF */;
     height: 100%;
     width: 33%;
     border-radius: 100px;
@@ -159,6 +168,11 @@
     svg {
         margin-top: -2px;
     }
+
+    &:disabled {
+        pointer-events: none;
+        opacity: 0.6;
+    }
 }
 
 .button_2 {
@@ -171,6 +185,10 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.15s;
+    &:disabled {
+        pointer-events: none;
+        opacity: 0.6;
+    }
 
     svg path {
         fill: var(--color-button-accent);

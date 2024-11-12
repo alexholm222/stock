@@ -38,9 +38,10 @@ const Button = ({ type, setModalType, disabled }) => {
 const App = () => {
   const [theme, setTheme] = useState('light');
   const [modalType, setModalType] = useState(0);
-  const [activeTab, setActiveTab] = useState(JSON.parse(localStorage.getItem('tabStock')) || '1');
+  const [activeTab, setActiveTab] = useState('1');
   const [stockRemainsFirstLoad, setStockRemainsFirstLoad] = useState([])
   const [stockRemains, setStockRemains] = useState([]);
+  const [sumRemains, setSumRemains] = useState(0);
   const [vendorsFirstLoad, setVendorsFirstLoad] = useState([]);
   const [vendors, setVendors] = useState([]);
   const [payers, setPayers] = useState([]);
@@ -64,6 +65,7 @@ const App = () => {
   const updateContracts = useSelector(updateSelector).updateContracts;
   const updatePayers = useSelector(updateSelector).updatePayers;
   const role = document.getElementById('root_stock').getAttribute('role');
+  console.log(vendors)
   //прокрутка страницы наверх 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -128,9 +130,36 @@ const App = () => {
   useEffect(() => {
     getStockRemains()
       .then(res => {
+        const remains = res.data;
+        const sum = remains.reduce((acc, el) => acc + Number(el.sum), 0);
+        setSumRemains(sum)
+
+        remains.sort((a, b) => {
+          const first = a.rate == 0 ? -1 : a.quantity / a.rate;
+          const second = b.rate == 0 ? -1 : b.quantity / b.rate;
+
+          if (second == -1) {
+            return -1;
+          }
+
+          if (first > second && (first !== -1 && second !== -1)) {
+            return 1;
+          }
+
+          if (first < second && (first !== -1 && second !== -1)) {
+            return -1;
+          }
+
+          if (first == second && (first !== -1 && second !== -1)) {
+            return 0;
+          }
+        })
+
         setStockRemainsFirstLoad(res.data);
         setStockRemains(res.data);
-        setLoad(false);
+        setTimeout(() => {
+          setLoad(false);
+        }, 200)
       })
       .catch(err => {
         setErrorLoad(true);
@@ -138,9 +167,9 @@ const App = () => {
       })
   }, [updateRemains]);
 
-  //Получаю список списаний
+  //Получаю список изьятий
   useEffect(() => {
-    getWithdraw()
+    getOutcoming()
       .then(res => {
         setWithdrawFirstLoad(res.data);
         setWithdraw(res.data);
@@ -152,9 +181,9 @@ const App = () => {
       })
   }, [updateRemains]);
 
-  //Получаю список изъятий
+  //Получаю список списаний
   useEffect(() => {
-    getOutcoming()
+    getWithdraw()
       .then(res => {
         setOutcomingFirstLoad(res.data);
         setOutcoming(res.data);
@@ -170,8 +199,11 @@ const App = () => {
   useEffect(() => {
     getVendors()
       .then(res => {
-        setVendorsFirstLoad([...res.data]);
-        setVendors(res.data);
+        const vendorsOnlyWithInn = res.data.filter(el => el.inn !== '' && el.inn !== null);
+        const vendors = role == 'administrator' ? res.data : vendorsOnlyWithInn;
+        console.log(vendors)
+        setVendorsFirstLoad([...vendors]);
+        setVendors(vendors);
         setTimeout(() => {
           setLoad5(false);
         }, 200)
@@ -184,25 +216,77 @@ const App = () => {
 
   //Получаю список плательщиков //Список шаблнов // Список категорий
   useEffect(() => {
-    Promise.all([getPayersList(), getPatterns(), getCategories()])
-      .then(([res1, res2, res3]) => {
-        const payers = res1.data;
-        const patterns = res2.data;
-        const categories = res3.data;
-        console.log(payers, patterns, categories)
-        setPayers(payers);
-        setPatterns(patterns);
-        setCategories(categories);
+    if (role == 'administrator') {
+      Promise.all([getPayersList(), getPatterns(), getCategories()])
+        .then(([res1, res2, res3]) => {
+          const payers = res1.data;
+          const patterns = res2.data;
+          const categories = res3.data;
+          console.log(payers, patterns, categories);
 
-        setTimeout(() => {
-          setLoad6(false);
-        }, 100)
+          payers.sort((a, b) => {
+            if (a.by_default > b.by_default) {
+              return -1
+            }
 
-      })
-      .catch(err => {
-        setErrorLoad(true);
-        console.log(err);
-      })
+            if (a.by_default < b.by_default) {
+              return 1
+            }
+          })
+
+          categories.sort((a, b) => {
+            if (a.by_default > b.by_default) {
+              return -1
+            }
+
+            if (a.by_default < b.by_default) {
+              return 1
+            }
+          })
+          setPayers(payers);
+          setPatterns(patterns);
+          setCategories(categories);
+
+          setTimeout(() => {
+            setLoad6(false);
+          }, 100)
+
+        })
+        .catch(err => {
+          setErrorLoad(true);
+          console.log(err);
+        })
+      return
+    }
+
+    if (role !== 'administrator') {
+      getPayersList()
+        .then(res => {
+          const payers = res.data;
+          payers.sort((a, b) => {
+            if (a.by_default > b.by_default) {
+              return -1
+            }
+
+            if (a.by_default < b.by_default) {
+              return 1
+            }
+          })
+
+          setPayers(payers);
+
+          setTimeout(() => {
+            setLoad6(false);
+          }, 100)
+
+        })
+        .catch(err => {
+          setErrorLoad(true);
+          console.log(err);
+        })
+      return
+    }
+
   }, [updatePayers])
 
   //Получаю список договоров
@@ -221,28 +305,29 @@ const App = () => {
       })
   }, [updateContracts])
 
+
   return (
     <div className={s.app}>
       <h2 className={s.title}>Склад</h2>
       <div className={s.header}>
-        {activeTab == 1 && <Search setList={setStockRemains} list={stockRemainsFirstLoad} load={load}/>}
-        {activeTab == 2 && <Search setList={setOutcoming} list={outcomingFirstLoad} load={load2}/>}
-        {activeTab == 3 && <Search setList={setWithdraw} list={withdrawFirstLoad} load={load3}/>}
-        {activeTab == 4 && <Search setList={setContracts} list={contractsFirstLoad} type={4} load={load4}/>}
-        {activeTab == 5 && <Search setList={setVendors} list={vendorsFirstLoad} load={load5}/>}
-        {activeTab == 6 && <Search type={6} />}
-        <Tabs setActiveTab={setActiveTab} activeTab={activeTab} role={role}/>
+        {activeTab == 1 && <Search setList={setStockRemains} list={stockRemainsFirstLoad} load={load} activeTab={activeTab} />}
+        {activeTab == 2 && <Search setList={setOutcoming} list={outcomingFirstLoad} load={load2} activeTab={activeTab} />}
+        {activeTab == 3 && <Search setList={setWithdraw} list={withdrawFirstLoad} load={load3} activeTab={activeTab} />}
+        {activeTab == 4 && <Search setList={setContracts} list={contractsFirstLoad} type={4} load={load4} activeTab={activeTab} />}
+        {activeTab == 5 && <Search setList={setVendors} list={vendorsFirstLoad} load={load5} activeTab={activeTab} />}
+        {activeTab == 6 && <Search type={6} activeTab={activeTab} />}
+        <Tabs setActiveTab={setActiveTab} activeTab={activeTab} role={role} />
         {activeTab == 4 && <Button type={4} setModalType={setModalType} disabled={!load6 && !load4 ? false : true} />}
         {activeTab == 5 && <Button type={5} setModalType={setModalType} disabled={load5} />}
 
       </div>
-      {activeTab == 1 && <Balance stockRemains={stockRemains} load={load} />}
+      {activeTab == 1 && <Balance stockRemains={stockRemains} outcoming={outcoming} load={load} sumRemains={sumRemains}/>}
       {activeTab == 2 && <Outcoming outcoming={[...outcoming].reverse()} load={load2} />}
       {activeTab == 3 && <Withdraw withdraw={[...withdraw].reverse()} load={load3} />}
       {activeTab == 4 && <Сontracts modalType={modalType} setModalType={setModalType} contracts={contracts} load={load4} vendors={vendorsFirstLoad} payers={payers} />}
       {activeTab == 5 && <Suppliers modalType={modalType} setModalType={setModalType} vendors={[...vendors].reverse()} load={load5} />}
       {activeTab == 6 && role == 'administrator' && <Options load={load6} payers={payers} patterns={patterns} categories={categories} />}
-      {errorLoad && <Error setErrorLoad={setErrorLoad} text={'При загрузке данных произошла ошибка, попробуй перезагрузить страницу'}/>}
+      {errorLoad && <Error setErrorLoad={setErrorLoad} text={'При загрузке данных произошла ошибка, попробуй перезагрузить страницу'} />}
     </div>
   );
 }

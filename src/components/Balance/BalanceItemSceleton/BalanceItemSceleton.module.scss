@@ -4,7 +4,7 @@
     overflow: hidden;
     transition: all 0.2s ease-in-out;
     box-sizing: border-box;
-    border-bottom: 1px solid #EAF0FA;
+    border-bottom: 1px solid var(--color-line-border);
 
 
     &:last-child {
@@ -48,6 +48,9 @@
     height: 100%;
     flex-shrink: 0;
     padding: 16px 12px;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 4px;
 
     div {
         height: 14px;
@@ -58,9 +61,12 @@
 
 .total {
     width: 184px;
+    display: flex;
+    justify-content: flex-end;
     height: 100%;
     flex-shrink: 0;
     padding: 16px 12px;
+    margin-right: 100px;
 
     div {
         height: 14px;

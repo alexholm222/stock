@@ -41,7 +41,7 @@
     overflow: hidden;
     transition: all 0.3s ease-in-out;
     min-height: 420px;
-
+    position: relative;
     &_cat {
         min-height: 180px !important;
     }
