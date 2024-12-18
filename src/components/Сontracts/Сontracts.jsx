@@ -19,6 +19,8 @@ const Сontracts = ({ modalType, setModalType, contracts, load, vendors, payers 
     const listRef = useRef();
     const updateContracts = useSelector(updateSelector).updateContracts;
 
+    
+
     useEffect(() => {
         setTimeout(() => {
             setAnim(true)
