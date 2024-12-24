@@ -5,7 +5,7 @@ import PatternSceleton from './PatternSceleton/PatternSceleton';
 import { useState, useEffect } from 'react';
 
 const Patterns = ({ patterns, load, setModal, setEl, setModalDelete, setElDelete }) => {
-    const [height, setHeight] = useState(720)
+    const [height, setHeight] = useState(580)
 
     useEffect(() => {
         const height = patterns.length * 62;
@@ -14,7 +14,7 @@ const Patterns = ({ patterns, load, setModal, setEl, setModalDelete, setElDelete
                 setHeight(height)
             }, 100)
         } else {
-            setHeight(720);
+            setHeight(580);
         }
 
     }, [load, patterns]);

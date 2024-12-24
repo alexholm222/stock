@@ -14,11 +14,13 @@ const AddCategory = ({ setModal }) => {
     const [success, setSuccess] = useState(false);
     const [name, setName] = useState('');
     const [disabled, setDisabled] = useState(true);
-    const [check, setCheck] = useState(false);
+    const [defaultCheck, setDefaultCheck] = useState(false);
+    const [InStockCheck, setInStockCheck] = useState(true);
+    const [takeAccountCheck, setTakeAccountCheck] = useState(true);
     const modalRef = useRef();
     const inputRef = useRef();
     const dispatch = useDispatch();
-  
+
     //анимация при открытии страницы
     useEffect(() => {
         setAnim(true)
@@ -66,24 +68,29 @@ const AddCategory = ({ setModal }) => {
         setName(value);
     }
 
-
-
-
-
-
-
-    const handleCheck = () => {
-        check ? setCheck(false) : setCheck(true)
+    const handleDefaultCheck = () => {
+        defaultCheck ? setDefaultCheck(false) : setDefaultCheck(true)
     }
 
+    const handleInStockCheck = () => {
+        InStockCheck ? setInStockCheck(false) : setInStockCheck(true)
+    }
+
+
+    const handleTakeAccountCheck = () => {
+        takeAccountCheck ? setTakeAccountCheck(false) : setTakeAccountCheck(true)
+    }
+
+    console.log(defaultCheck, InStockCheck, takeAccountCheck)
+
     const handleConfirm = () => {
-        addCategory(name, check)
-        .then(res => {
-            console.log(res);
-            dispatch(setUpdatePayers());
-            setSuccess(true);
-        })
-        .catch(err => console.log(err));
+        addCategory(name, defaultCheck, InStockCheck, takeAccountCheck)
+            .then(res => {
+                console.log(res);
+                dispatch(setUpdatePayers());
+                setSuccess(true);
+            })
+            .catch(err => console.log(err));
         return
     }
 
@@ -98,7 +105,7 @@ const AddCategory = ({ setModal }) => {
             <div ref={modalRef} className={`${s.modal} ${anim && !success && s.modal_anim}`}>
                 <div className={s.header}>
                     <h2 className={s.title}>
-                    Добавление категории
+                        Добавление категории
                     </h2>
                     <IconClose onClick={handleCloseModal} />
                 </div>
@@ -115,13 +122,31 @@ const AddCategory = ({ setModal }) => {
 
 
 
-                <div onClick={handleCheck} className={s.check}>
-                    <div className={`${s.checkbox} ${check && s.checkbox_check}`}>
+                <div onClick={handleDefaultCheck} className={s.check}>
+                    <div className={`${s.checkbox} ${defaultCheck && s.checkbox_check}`}>
                         <div>
                             <IconCheck />
                         </div>
                     </div>
                     <p>Категория по умолчанию</p>
+                </div>
+
+                <div onClick={handleInStockCheck} className={s.check}>
+                    <div className={`${s.checkbox} ${InStockCheck && s.checkbox_check}`}>
+                        <div>
+                            <IconCheck />
+                        </div>
+                    </div>
+                    <p>Учитывать закупки категории в остатках склада</p>
+                </div>
+
+                <div onClick={handleTakeAccountCheck} className={s.check}>
+                    <div className={`${s.checkbox} ${takeAccountCheck && s.checkbox_check}`}>
+                        <div>
+                            <IconCheck />
+                        </div>
+                    </div>
+                    <p>Учитывать закупки категории в финансовых итогах</p>
                 </div>
                 <button onClick={handleConfirm} disabled={disabled} className={s.button}>Добавить</button>
             </div>
@@ -130,7 +155,7 @@ const AddCategory = ({ setModal }) => {
                 <div className={s.close}><IconClose /></div>
                 <IconSuccess />
                 <h2 className={`${s.title} ${s.title_success}`}>
-                Новая категория добавлена
+                    Новая категория добавлена
                 </h2>
                 <p className={s.text}>
                     {name} добавлена в общий список и является категорией по умочанию

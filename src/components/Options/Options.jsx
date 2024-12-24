@@ -84,7 +84,7 @@ const Options = ({ payers, patterns, categories, load }) => {
                         <h2 className={s.title}>Список плательщиков</h2>
                         {!load && <div style={{ height: `${heightPayers}px` }} className={s.items}>
                             {payers.map((el, i) => {
-                                return <Item key={el.id} i={i} el={el} setModal={setModalDelete} setElDelete={setElDelete} type={'payer'} setModalAddDefault={setModalAddDefault} setType={setType}/>
+                                return <Item key={el.id} i={i} el={el} setModal={setModalDelete} setElDelete={setElDelete} type={'payer'} setModalAddDefault={setModalAddDefault} modalAddDefault={modalAddDefault}  setType={setType}/>
                             })}
                         </div>
                         }
@@ -102,7 +102,7 @@ const Options = ({ payers, patterns, categories, load }) => {
                         <h2 className={s.title}>Категории закупок</h2>
                         {!load && <div style={{ height: `${heightCategories}px` }} className={`${s.items} ${s.items_cat}`}>
                             {categories.map((el, i) => {
-                                return <Item key={el.id} i={i} el={el} setModal={setModalDelete2} setElDelete={setElDelete2} type={'categories'} setModalAddDefault={setModalAddDefault} setType={setType}/>
+                                return <Item key={el.id} i={i} el={el} setModal={setModalDelete2} setElDelete={setElDelete2} type={'categories'} setModalAddDefault={setModalAddDefault} modalAddDefault={modalAddDefault} setType={setType}/>
                             })}
                         </div>
                         }

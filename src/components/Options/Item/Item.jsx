@@ -1,6 +1,7 @@
 import s from './Item.module.scss';
 import { ReactComponent as IconCheck } from '../../../image/icon/iconCheck.svg';
 import { ReactComponent as IconDelete } from '../../../image/icon/iconDelete.svg';
+import { ReactComponent as IconOptions } from '../../../image/icon/iconSetting.svg';
 import { useState, useEffect } from 'react';
 //Api
 import { payerActivate, сategoryActivate } from '../../../Api/Api';
@@ -16,9 +17,10 @@ const Bage = ({ active, handleModalDelete }) => {
     )
 }
 
-const Item = ({ el, i, setModal, setElDelete, type, setModalAddDefault, setType }) => {
+const Item = ({ el, i, setModal, setElDelete, type, setModalAddDefault, modalAddDefault, setType }) => {
     const [check, setCheck] = useState(el.active);
     const [position, setPosition] = useState(i * 60 || 0);
+    const [optionsView, setOptionsView] = useState(false);
 
     useEffect(() => {
         const num = i * 60;
@@ -27,40 +29,44 @@ const Item = ({ el, i, setModal, setElDelete, type, setModalAddDefault, setType 
 
     useEffect(() => {
         setCheck(el.active)
-    },[el])
+    }, [el])
+
+    useEffect(() => {
+        !modalAddDefault && setOptionsView(false)
+    }, [modalAddDefault])
 
     const handleCheck = () => {
         if (check && type == 'payer') {
             payerActivate(el.id, false)
-            .then(res => {
-                setCheck(false);
-            })
-            .catch(err => console.log(err))
+                .then(res => {
+                    setCheck(false);
+                })
+                .catch(err => console.log(err))
             return
         }
         if (!check && type == 'payer') {
             payerActivate(el.id, true)
-            .then(res => {
-                setCheck(true);
-            })
-            .catch(err => console.log(err))
+                .then(res => {
+                    setCheck(true);
+                })
+                .catch(err => console.log(err))
             return
         }
 
         if (check && type == 'categories') {
             сategoryActivate(el.id, false)
-            .then(res => {
-                setCheck(false);
-            })
-            .catch(err => console.log(err))
+                .then(res => {
+                    setCheck(false);
+                })
+                .catch(err => console.log(err))
             return
         }
         if (!check && type == 'categories') {
             сategoryActivate(el.id, true)
-            .then(res => {
-                setCheck(true);
-            })
-            .catch(err => console.log(err))
+                .then(res => {
+                    setCheck(true);
+                })
+                .catch(err => console.log(err))
             return
         }
     }
@@ -76,18 +82,32 @@ const Item = ({ el, i, setModal, setElDelete, type, setModalAddDefault, setType 
         setElDelete(el)
     }
 
+    const handleViewOptions = () => {
+        setOptionsView(true)
+    }
+    const handleHiddenOptions = () => {
+        !modalAddDefault && setOptionsView(false)
+    }
+
     return (
         <>
-            <div style={{top: `${position}px`}} className={`${s.item}`}>
-                <div className={s.container}>
-                    <div onClick={handleCheck} className={`${s.checkbox} ${check && s.checkbox_check} ${el.by_default == 1 && s.checkbox_default}`}>
+            <div onMouseEnter={handleViewOptions} onMouseLeave={handleHiddenOptions} style={{ top: `${position}px` }} className={`${s.item}`}>
+                <div onClick={handleCheck} className={`${s.container} ${el.by_default == 1 && s.container_default}`}>
+                    <div className={`${s.checkbox} ${check && s.checkbox_check} ${el.by_default == 1 && s.checkbox_default}`}>
                         <div>
                             <IconCheck />
                         </div>
                     </div>
-                    <p onClick={handleModalDefault} className={`${s.name} ${el.by_default == 1 && s.name_dis}`}>{el.name}</p>
+                    <p className={`${s.name}`}>{el.name}</p>
                 </div>
-                <Bage active={check} handleModalDelete={handleModalDelete}/>
+                <div className={s.buttons}>
+                    <Bage active={check} handleModalDelete={handleModalDelete} />
+                    <div onClick={handleModalDefault} className={`${s.options} ${s.options_view} ${modalAddDefault && optionsView && s.options_anim}`}>
+                        <IconOptions />
+                    </div>
+
+                </div>
+
             </div>
 
         </>

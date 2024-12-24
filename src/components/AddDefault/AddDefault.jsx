@@ -14,7 +14,10 @@ const AddDefault = ({ setModal, el, type }) => {
     const [success, setSuccess] = useState(false);
     const [name, setName] = useState('');
     const [disabled, setDisabled] = useState(true);
-    const [check, setCheck] = useState(el.by_default);
+    const [check, setCheck] = useState();
+    const [defaultCheck, setDefaultCheck] = useState(el.by_default);
+    const [InStockCheck, setInStockCheck] = useState(el.in_stock);
+    const [takeAccountCheck, setTakeAccountCheck] = useState(el.take_account_cat);
     const modalRef = useRef();
     const dispatch = useDispatch();
 
@@ -61,14 +64,24 @@ const AddDefault = ({ setModal, el, type }) => {
         setName(value);
     }
 
-    const handleCheck = () => {
-        check ? setCheck(false) : setCheck(true)
+    const handleDefaultCheck = () => {
+        defaultCheck ? setDefaultCheck(false) : setDefaultCheck(true)
+    }
+
+
+    const handleInStockCheck = () => {
+        InStockCheck ? setInStockCheck(false) : setInStockCheck(true)
+    }
+
+
+    const handleTakeAccountCheck = () => {
+        takeAccountCheck ? setTakeAccountCheck(false) : setTakeAccountCheck(true)
     }
 
     const handleConfirm = () => {
 
         if (type == 'payer') {
-            payerDefault(el.id, true, check)
+            payerDefault(el.id, true, defaultCheck)
                 .then(res => {
                     console.log(res);
                     setTimeout(() => {
@@ -81,7 +94,7 @@ const AddDefault = ({ setModal, el, type }) => {
         }
 
         if (type == 'categories') {
-            сategoryDefault(el.id, true, check)
+            сategoryDefault(el.id, true, defaultCheck, InStockCheck, takeAccountCheck)
                 .then(res => {
                     console.log(res);
                     setTimeout(() => {
@@ -99,24 +112,49 @@ const AddDefault = ({ setModal, el, type }) => {
         return () => document.removeEventListener('mousedown', closeModal);
     }, []);
 
+    console.log(el.by_default, type)
+
     return (
         <div className={`${s.overlay} ${anim && s.overlay_anim}`}>
 
             <div ref={modalRef} className={`${s.modal} ${anim && !success && s.modal_anim}`}>
                 <div className={s.header}>
-                    <p className={s.text}>{el.name}</p>
+                    {type == 'categories' && <h2 className={s.title}>Настройки категории</h2>}
+                    {type == 'payer' && <h2 className={s.title}>Настройки плательщика</h2>}
                     <IconClose onClick={handleCloseModal} />
                 </div>
 
-
-                <div onClick={handleCheck} className={s.check}>
-                    <div className={`${s.checkbox} ${check && s.checkbox_check}`}>
+                <p className={s.text}>{el.name}</p>
+                <div onClick={handleDefaultCheck} className={`${s.check} ${el.by_default == 1 && s.check_default}`}>
+                    <div className={`${s.checkbox} ${defaultCheck && s.checkbox_check} ${el.by_default == 1 && s.checkbox_default}`}>
                         <div>
                             <IconCheck />
                         </div>
                     </div>
                     <p>{type == 'payer' ? 'Плательщик' : 'Категория'} по умолчанию</p>
                 </div>
+
+                {type == 'categories' && <div onClick={handleInStockCheck} className={s.check}>
+                    <div className={`${s.checkbox} ${InStockCheck && s.checkbox_check}`}>
+                        <div>
+                            <IconCheck />
+                        </div>
+                    </div>
+                    <p>Учитывать закупки категории в остатках склада</p>
+                </div>
+                }
+
+                {type == 'categories' && <div onClick={handleTakeAccountCheck} className={s.check}>
+                    <div className={`${s.checkbox} ${takeAccountCheck && s.checkbox_check}`}>
+                        <div>
+                            <IconCheck />
+                        </div>
+                    </div>
+                    <p>Учитывать закупки категории в финансовых итогах</p>
+                </div>
+                }
+
+
                 <button onClick={handleConfirm} className={s.button}>Сохранить</button>
             </div>
 

@@ -135,12 +135,12 @@ export const getCategories = () => {
     return instanceWithToken.get(`${baseUrl}api/purchases/stock/settings/categories`);
 }
 
-export const addPayer = (id, name, inn, payment_type, by_default) => {
+export const addPayer = (name, inn, payment_type, by_default) => {
     return instanceWithToken({
         method: 'post',
         mode: "cors",
         url: `${baseUrl}api/purchases/stock/settings/payers`,
-        data: { id, name, inn, payment_type, by_default }
+        data: { name, inn, payment_type, by_default }
     })
 }
 
@@ -180,12 +180,12 @@ export const payerDefault = (id, active, by_default) => {
     })
 }
 
-export const addCategory = (name, by_default) => {
+export const addCategory = (name, by_default, in_stock, take_account_cat) => {
     return instanceWithToken({
         method: 'post',
         mode: "cors",
         url: `${baseUrl}api/purchases/stock/settings/categories`,
-        data: { name, by_default }
+        data: { name, by_default, in_stock, take_account_cat }
     })
 }
 
@@ -207,12 +207,12 @@ export const сategoryActivate = (id, active) => {
     })
 }
 
-export const сategoryDefault = (id, active, by_default) => {
+export const сategoryDefault = (id, active, by_default, in_stock, take_account_cat) => {
     return instanceWithToken({
         method: 'patch',
         mode: "cors",
         url: `${baseUrl}api/purchases/stock/settings/categories`,
-        data: { id, active, by_default }
+        data: { id, active, by_default, in_stock, take_account_cat }
     })
 }
 
@@ -221,7 +221,7 @@ export const addPattern = (name, unit, type, max_price, rate, active) => {
         method: 'post',
         mode: "cors",
         url: `${baseUrl}api/purchases/stock/settings/items`,
-        data: { name, unit, type, max_price, rate, active}
+        data: { name, unit, type, max_price, rate, active }
     })
 }
 
@@ -230,7 +230,7 @@ export const editPattern = (name, unit, type, max_price, rate, active, id) => {
         method: 'put',
         mode: "cors",
         url: `${baseUrl}api/purchases/stock/settings/items`,
-        data: { name, unit, type, max_price, rate, active, id}
+        data: { name, unit, type, max_price, rate, active, id }
     })
 }
 

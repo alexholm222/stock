@@ -20,7 +20,7 @@
     box-shadow: var(--box-shadow);
     border-radius: 8px;
     padding: 32px;
-    width: 440px;
+    width: 500px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -276,7 +276,7 @@
         svg {
             width: 88%;
             height: 88%;
-            margin-top: 2px;
+            margin-top: 1px;
             transform: scale(0);
             transition-delay: 0.15s;
             transition: all 0.15s ease-in-out;
