@@ -14,7 +14,11 @@ import Сontracts from '../Сontracts/Сontracts';
 import Options from '../Options/Options';
 import Error from '../Error/Error';
 //API
-import { getStockRemains, getOutcoming, getWithdraw, getVendors, getContracts, getPayersList, getPatterns, getCategories } from '../../Api/Api';
+import {
+  getStockRemains, getOutcoming, getWithdraw, getVendors, getContracts,
+  getPayersList, getPatterns, getCategories, getPermissions, getEmployees,
+  getProfile
+} from '../../Api/Api';
 
 const Button = ({ type, setModalType, disabled }) => {
   const [buttonAnim, setButtonAnim] = useState(false);
@@ -37,6 +41,8 @@ const Button = ({ type, setModalType, disabled }) => {
 
 const App = () => {
   const [theme, setTheme] = useState('light');
+  const [role, setRole] = useState('');
+  const [profile, setProfile] = useState({});
   const [modalType, setModalType] = useState(0);
   const [activeTab, setActiveTab] = useState('1');
   const [stockRemainsFirstLoad, setStockRemainsFirstLoad] = useState([])
@@ -54,6 +60,8 @@ const App = () => {
   const [outcomingFirstLoad, setOutcomingFirstLoad] = useState([])
   const [outcoming, setOutcoming] = useState([]);
   const [errorLoad, setErrorLoad] = useState(false);
+  const [employees, setEmployees] = useState([]);
+  const [permissions, setPermissions] = useState([]);
   const [load, setLoad] = useState(true);
   const [load2, setLoad2] = useState(true);
   const [load3, setLoad3] = useState(true);
@@ -64,8 +72,21 @@ const App = () => {
   const updateSuppliers = useSelector(updateSelector).updateSuppliers;
   const updateContracts = useSelector(updateSelector).updateContracts;
   const updatePayers = useSelector(updateSelector).updatePayers;
-  const role = document.getElementById('root_stock').getAttribute('role');
-  console.log(vendors)
+  const updatePermissions = useSelector(updateSelector).updatePermissions;
+/*   const role = document.getElementById('root_stock').getAttribute('role'); */
+
+
+  //Информация о пользователе
+  useEffect(() => {
+    getProfile()
+      .then(res => {
+        const data = res.data.data;
+        setProfile(data)
+        setRole(data.position)
+      })
+      .catch(err => console.log(err))
+  }, []);
+
   //прокрутка страницы наверх 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -200,7 +221,7 @@ const App = () => {
     getVendors()
       .then(res => {
         const vendorsOnlyWithInn = res.data.filter(el => el.inn !== '' && el.inn !== null);
-        const vendors = role == 'administrator' ? res.data : vendorsOnlyWithInn;
+        const vendors = (role =='administrator' || role == 'director') ? res.data : vendorsOnlyWithInn;
         console.log(vendors)
         setVendorsFirstLoad([...vendors]);
         setVendors(vendors);
@@ -216,7 +237,7 @@ const App = () => {
 
   //Получаю список плательщиков //Список шаблнов // Список категорий
   useEffect(() => {
-    if (role == 'administrator') {
+    if ((role =='administrator' || role == 'director')) {
       Promise.all([getPayersList(), getPatterns(), getCategories()])
         .then(([res1, res2, res3]) => {
           const payers = res1.data;
@@ -259,7 +280,7 @@ const App = () => {
       return
     }
 
-    if (role !== 'administrator') {
+    if ((role !== 'administrator' && role !== 'director')) {
       getPayersList()
         .then(res => {
           const payers = res.data;
@@ -287,7 +308,7 @@ const App = () => {
       return
     }
 
-  }, [updatePayers])
+  }, [updatePayers, role])
 
   //Получаю список договоров
   useEffect(() => {
@@ -305,10 +326,23 @@ const App = () => {
       })
   }, [updateContracts])
 
+  //Получаю список сотрудников и прав
+  useEffect(() => {
+    Promise.all([getPermissions(), getEmployees()])
+      .then(([res1, res2]) => {
+        const data1 = res1.data.data;
+        const data2 = res2.data.data;
+        setPermissions(data1)
+        setEmployees(data2)
+      })
+      .catch(err => console.log(err))
+
+  }, [updatePermissions])
+
 
   return (
     <div className={s.app}>
-      <h2 className={s.title}>Склад</h2>
+      <h2 className={s.title}>Склад  {profile.name} <span>{role}</span></h2>
       <div className={s.header}>
         {activeTab == 1 && <Search setList={setStockRemains} list={stockRemainsFirstLoad} load={load} activeTab={activeTab} />}
         {activeTab == 2 && <Search setList={setOutcoming} list={outcomingFirstLoad} load={load2} activeTab={activeTab} />}
@@ -321,12 +355,12 @@ const App = () => {
         {activeTab == 5 && <Button type={5} setModalType={setModalType} disabled={load5} />}
 
       </div>
-      {activeTab == 1 && <Balance stockRemains={stockRemains} outcoming={outcoming} load={load} sumRemains={sumRemains}/>}
+      {activeTab == 1 && <Balance stockRemains={stockRemains} outcoming={outcoming} load={load} sumRemains={sumRemains} />}
       {activeTab == 2 && <Outcoming outcoming={[...outcoming].reverse()} load={load2} />}
       {activeTab == 3 && <Withdraw withdraw={[...withdraw].reverse()} load={load3} />}
       {activeTab == 4 && <Сontracts modalType={modalType} setModalType={setModalType} contracts={contracts} load={load4} vendors={vendorsFirstLoad} payers={payers} />}
-      {activeTab == 5 && <Suppliers modalType={modalType} setModalType={setModalType} vendors={[...vendors].reverse()} load={load5} />}
-      {activeTab == 6 && role == 'administrator' && <Options load={load6} payers={payers} patterns={patterns} categories={categories} />}
+      {activeTab == 5 && <Suppliers role={role} modalType={modalType} setModalType={setModalType} vendors={[...vendors].reverse()} load={load5} />}
+      {activeTab == 6 && (role =='administrator' || role == 'director') && <Options load={load6} payers={payers} patterns={patterns} categories={categories} employees={employees} permissions={permissions} />}
       {errorLoad && <Error setErrorLoad={setErrorLoad} text={'При загрузке данных произошла ошибка, попробуй перезагрузить страницу'} />}
     </div>
   );

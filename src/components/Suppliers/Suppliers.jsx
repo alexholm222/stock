@@ -7,12 +7,11 @@ import ModalSuplier from './ModalSupliers/ModalSuplier';
 import SupliersSceleton from './SuppliersSceleton/SupliersSceleton';
 
 
-const Suppliers = ({ modalType, setModalType, vendors, load }) => {
+const Suppliers = ({ modalType, setModalType, vendors, load, role }) => {
     const [anim, setAnim] = useState(false);
     const [listLength, setListLength] = useState(48);
     const [sort, setSort] = useState('');
     const listRef = useRef();
-    const role = document.getElementById('root_stock').getAttribute('role');
 
     useEffect(() => {
         setTimeout(() => {
@@ -85,8 +84,9 @@ const Suppliers = ({ modalType, setModalType, vendors, load }) => {
                 }
             </div>
             {!load && <div className={s.container}>
+                 {vendors.length == 0 && <li className={s.empty}><p>Список поставщиков пуст</p></li>}
                 {vendors.slice(0, listLength).map((el, i) =>
-                    <Supplier key={el.id} el={el} />
+                    <Supplier key={el.id} el={el} role={role}/>
                 )}
             </div>
             }

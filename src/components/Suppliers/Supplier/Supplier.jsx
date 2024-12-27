@@ -4,9 +4,8 @@ import { ReactComponent as IconCheck } from '../../../image/icon/iconCheck.svg';
 //API
 import { updateVendorIgnor } from '../../../Api/Api';
 
-const Supplier = ({ el }) => {
-    const [check, setCheck] = useState(el.act == 0 ? false : true);
-    const role = document.getElementById('root_stock').getAttribute('role');
+const Supplier = ({ el, role }) => {
+    const [check, setCheck] = useState(el.act == 0 ? false : true);;
 
     const handleCheck = () => {
         check ? setCheck(false) : setCheck(true)

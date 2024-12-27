@@ -4,11 +4,11 @@ import { useState, useEffect, useRef } from 'react';
 import OutcomingItem from './OutcomingItem/OutcomingItem';
 import OutcomingSceleton from './OutcomingSceleton/OutcomingSceleton';
 
-const Outcoming = ({outcoming, load}) => {
+const Outcoming = ({ outcoming, load }) => {
     const [anim, setAnim] = useState(false);
     const [listLength, setListLength] = useState(48);
     const listRef = useRef();
-   
+
     useEffect(() => {
         setTimeout(() => {
             setAnim(true)
@@ -53,20 +53,21 @@ const Outcoming = ({outcoming, load}) => {
                     <p>Статус</p>
                 </div>
             </div>
-             {!load && <div className={s.container}>
-                    {outcoming.slice(0, listLength).map((el, i) =>
-                        <OutcomingItem key={el.id} el={el} />
-                    )}
-                </div>
-                }
+            {!load && <div className={s.container}>
+                {outcoming.length == 0 && <li className={s.empty}><p>Позиций на списание нет</p></li>}
+                {outcoming.slice(0, listLength).map((el, i) =>
+                    <OutcomingItem key={el.id} el={el} />
+                )}
+            </div>
+            }
 
 
-             {load && <div className={s.container}>
-                    {[...Array(25)].map((el, i) =>
-                        <OutcomingSceleton key={i} />
-                    )}
-                </div>
-                }
+            {load && <div className={s.container}>
+                {[...Array(25)].map((el, i) =>
+                    <OutcomingSceleton key={i} />
+                )}
+            </div>
+            }
             {/* {modalType == 5 && <ModalSuplier setModal={setModalType} />} */}
         </div>
 

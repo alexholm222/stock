@@ -15,6 +15,10 @@ instanceWithToken.interceptors.request.use(config => {
     return config
 });
 
+export const getProfile = () => {
+    return instanceWithToken.get(`${baseUrl}api/profile`);
+}
+
 export const getStockRemains = () => {
     return instanceWithToken.get(`${baseUrl}api/purchases/stock/remains`);
 }
@@ -133,6 +137,25 @@ export const getPayersList = () => {
 
 export const getCategories = () => {
     return instanceWithToken.get(`${baseUrl}api/purchases/stock/settings/categories`);
+}
+//Получение списка прав
+export const getPermissions = () => {
+    return instanceWithToken.get(`${baseUrl}api/partnerships/permissions`);
+}
+
+//Предоставить права 
+export const giveRights = (person_id, permission_id) => {
+    return instanceWithToken.post(`${baseUrl}api/partnerships/give_right?person_id=${person_id}&permission_id=${permission_id}`);
+}
+
+export const takeRights = (person_id, permission_id) => {
+    return instanceWithToken.post(`${baseUrl}api/partnerships/take_right?person_id=${person_id}&permission_id=${permission_id}`);
+}
+
+
+//Получение списка сотрудников
+export const getEmployees = () => {
+    return instanceWithToken.get(`${baseUrl}api/partnerships/users`);
 }
 
 export const addPayer = (name, inn, payment_type, by_default) => {

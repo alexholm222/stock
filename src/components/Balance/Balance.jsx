@@ -147,6 +147,7 @@ const Balance = ({ stockRemains, load, sumRemains, outcoming }) => {
                 </div>
             </div>
             {!load && <ul className={s.container}>
+                {stockRemains.length == 0 && <li className={s.empty}><p>На склад не добавлены позиции</p></li>}
                 {stockRemains.slice(0, listLength).map((el, i) =>
                     <BalanceItem key={el.stock_id} el={el} position={i + 1} percent={el.quantity / (el.rate * 3)} outcoming={outcoming}/>
                 )}

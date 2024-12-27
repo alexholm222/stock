@@ -5,6 +5,7 @@ const initialState = {
 	updateSuppliers: 0,
 	updateContracts: 0,
 	updatePayers: 0,
+	updatePermissions: 0,
 };
 const updateSlice = createSlice({
 	name: 'update',
@@ -26,6 +27,10 @@ const updateSlice = createSlice({
 		setUpdatePayers(state) {
 			state.updatePayers = state.updatePayers + 1;
 		},
+
+		setUpdatePermissions(state) {
+			state.updatePermissions = state.updatePermissions + 1;
+		},
 	},
 });
 
@@ -33,7 +38,8 @@ export const {
 	setUpdateBalance,
 	setUpdateSuppliers,
 	setUpdateContracts,
-	setUpdatePayers
+	setUpdatePayers,
+	setUpdatePermissions
 } = updateSlice.actions;
 
 export default updateSlice.reducer;

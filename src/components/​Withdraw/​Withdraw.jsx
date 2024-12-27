@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import WithdrawItem from './WithdrawItem/WithdrawItem';
 import WithdrawSceleton from './WithdrawSceleton/WithdrawSceleton';
 
-const Withdraw = ({withdraw, load}) => {
+const Withdraw = ({ withdraw, load }) => {
     const [anim, setAnim] = useState(false);
     const [listLength, setListLength] = useState(40);
     const listRef = useRef();
@@ -49,20 +49,21 @@ const Withdraw = ({withdraw, load}) => {
                     <p>Проведено</p>
                 </div>
             </div>
-             {!load && <div className={s.container}>
-                    {withdraw.slice(0, listLength).map((el, i) =>
-                        <WithdrawItem key={el.id} el={el} />
-                    )}
-                </div>
-                }
+            {!load && <div className={s.container}>
+                {withdraw.length == 0 && <li className={s.empty}><p>Изьятий не было</p></li>}
+                {withdraw.slice(0, listLength).map((el, i) =>
+                    <WithdrawItem key={el.id} el={el} />
+                )}
+            </div>
+            }
 
 
-             {load && <div className={s.container}>
-                    {[...Array(25)].map((el, i) =>
-                        <WithdrawSceleton key={i} />
-                    )}
-                </div>
-                }
+            {load && <div className={s.container}>
+                {[...Array(25)].map((el, i) =>
+                    <WithdrawSceleton key={i} />
+                )}
+            </div>
+            }
             {/* {modalType == 5 && <ModalSuplier setModal={setModalType} />} */}
         </div>
 
