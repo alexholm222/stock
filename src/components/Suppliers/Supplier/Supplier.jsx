@@ -35,7 +35,7 @@ const Supplier = ({ el, role }) => {
             <div className={s.field}>
                 <p>{!el.kpp || el.kpp == '' ? '-' : el.kpp}</p>
             </div>
-            {role == 'administrator' && <div className={s.field}>
+            {(role == 'administrator' || role == 'director') && <div className={s.field}>
                 <div onClick={handleCheck} className={`${s.checkbox} ${check && s.checkbox_check} ${role !== 'administrator' && s.checkbox_dis}`}>
                     <div>
                         <IconCheck />

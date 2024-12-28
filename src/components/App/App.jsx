@@ -356,7 +356,7 @@ const App = () => {
 
       </div>
       {activeTab == 1 && <Balance stockRemains={stockRemains} outcoming={outcoming} load={load} sumRemains={sumRemains} />}
-      {activeTab == 2 && <Outcoming outcoming={[...outcoming].reverse()} load={load2} />}
+      {activeTab == 2 && <Outcoming role={role} outcoming={[...outcoming].reverse()} load={load2} />}
       {activeTab == 3 && <Withdraw withdraw={[...withdraw].reverse()} load={load3} />}
       {activeTab == 4 && <Сontracts modalType={modalType} setModalType={setModalType} contracts={contracts} load={load4} vendors={vendorsFirstLoad} payers={payers} />}
       {activeTab == 5 && <Suppliers role={role} modalType={modalType} setModalType={setModalType} vendors={[...vendors].reverse()} load={load5} />}

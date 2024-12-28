@@ -133,8 +133,8 @@ const Options = ({ payers, patterns, categories, load, employees, permissions })
 
                                 {permissions.map((el) => {
                                     return <div key={el.id} className={s.permission}>
-                                        {el.name == 'show_purchase_for_cash' && 'Все закупки безнал.'}
-                                        {el.name == 'show_purchase_for_cashless' && 'Все закупки нал.'}
+                                        {el.name == 'show_purchase_for_cashless' && 'Все закупки безнал.'}
+                                        {el.name == 'show_purchase_for_cash' && 'Все закупки нал.'}
                                     </div>
                                 })}
                                 

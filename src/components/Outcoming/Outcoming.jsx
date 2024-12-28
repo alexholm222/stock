@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import OutcomingItem from './OutcomingItem/OutcomingItem';
 import OutcomingSceleton from './OutcomingSceleton/OutcomingSceleton';
 
-const Outcoming = ({ outcoming, load }) => {
+const Outcoming = ({ outcoming, load, role}) => {
     const [anim, setAnim] = useState(false);
     const [listLength, setListLength] = useState(48);
     const listRef = useRef();
@@ -56,7 +56,7 @@ const Outcoming = ({ outcoming, load }) => {
             {!load && <div className={s.container}>
                 {outcoming.length == 0 && <li className={s.empty}><p>Позиций на списание нет</p></li>}
                 {outcoming.slice(0, listLength).map((el, i) =>
-                    <OutcomingItem key={el.id} el={el} />
+                    <OutcomingItem key={el.id} el={el} role={role}/>
                 )}
             </div>
             }

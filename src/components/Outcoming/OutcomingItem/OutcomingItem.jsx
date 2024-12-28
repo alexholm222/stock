@@ -11,9 +11,9 @@ const Bage = ({ status }) => {
     </div>
 }
 
-const OutcomingItem = ({ el }) => {
+const OutcomingItem = ({ el, role }) => {
     const [openModal, setModalOpen] = useState(false);
-    const role = document.getElementById('root_stock').getAttribute('role');
+  /*   const role = document.getElementById('root_stock').getAttribute('role'); */
     console.log(el)
     const handleOpenModal = () => {
         setModalOpen(true);

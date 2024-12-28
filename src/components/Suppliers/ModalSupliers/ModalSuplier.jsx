@@ -10,7 +10,7 @@ import { daData } from '../../../Api/ApiDaData';
 //slice
 import { setUpdateSuppliers } from '../../../store/reducer/update/slice';
 
-const ModalSuplier = ({ setModal }) => {
+const ModalSuplier = ({ role, setModal }) => {
     const [anim, setAnim] = useState(false);
     const [success, setSuccess] = useState(false);
     const [check, setCheck] = useState(false)
@@ -29,7 +29,6 @@ const ModalSuplier = ({ setModal }) => {
     const inputRef2 = useRef();
     const inputRef3 = useRef(); 
     const dispatch = useDispatch();
-    const role = document.getElementById('root_stock').getAttribute('role');
 
     useEffect(() => {
         setAnim(true)

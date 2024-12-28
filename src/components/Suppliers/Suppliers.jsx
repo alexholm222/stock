@@ -98,7 +98,7 @@ const Suppliers = ({ modalType, setModalType, vendors, load, role }) => {
                 )}
             </div>
             }
-            {modalType == 5 && <ModalSuplier setModal={setModalType} />}
+            {modalType == 5 && <ModalSuplier role={role} setModal={setModalType} />}
         </div>
     )
 };
