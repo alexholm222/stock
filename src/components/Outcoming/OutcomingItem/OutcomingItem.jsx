@@ -47,7 +47,7 @@ const OutcomingItem = ({ el }) => {
 
             <div className={s.status}>
                 <Bage status={el.status} />
-                {el.status == 0 && role == 'administrator' && <p onClick={handleOpenModal} className={s.button}>Списать</p>}
+                {el.status == 0 && (role =='administrator' || role == 'director') && <p onClick={handleOpenModal} className={s.button}>Списать</p>}
             </div>
             {openModal && <Modal setModalOpen={setModalOpen} el={el} />}
         </div>
