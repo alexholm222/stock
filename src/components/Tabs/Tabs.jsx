@@ -4,12 +4,12 @@ import { Link, useLocation } from 'react-router-dom';
 
 
 const tabs = [
-    { id: 1, name: 'Текущие остатки', link: '/remains' },
-    { id: 2, name: 'Списание', link: '/withdraw' },
-    { id: 3, name: 'Журнал изьятий', link: '/outcoming' },
-  /*   { id: 4, name: 'Договоры с поставщиками', link: '/contracts' }, */
-    { id: 5, name: 'Поставщики', link: '/vendors' },
-    { id: 6, name: 'Настройки', link: '/options' }
+    { id: 1, name: 'Текущие остатки', link: '/stock/' },
+    { id: 2, name: 'Списание', link: '/stock/?withdraw' },
+    { id: 3, name: 'Журнал изьятий', link: '/stock/?outcoming' },
+  /*   { id: 4, name: 'Договоры с поставщиками', link: '/stock/contracts' }, */
+    { id: 5, name: 'Поставщики', link: '/stock/?vendors' },
+    { id: 6, name: 'Настройки', link: '/stock/?options' }
 ];
 
 const Tab = ({ tab, link, id, active }) => {
@@ -24,7 +24,7 @@ const Tab = ({ tab, link, id, active }) => {
 
 const Tabs = ({ activeTab, setActiveTab, role }) => {
     const location = useLocation();
-    const path = location?.pathname;
+    const path = location.pathname + location.search;
 
     useEffect(() => {
         tabs.forEach((el) => {

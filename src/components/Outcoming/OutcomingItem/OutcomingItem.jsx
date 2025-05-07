@@ -13,8 +13,8 @@ const Bage = ({ status }) => {
 
 const OutcomingItem = ({ el, role }) => {
     const [openModal, setModalOpen] = useState(false);
-  /*   const role = document.getElementById('root_stock').getAttribute('role'); */
-    console.log(el)
+
+
     const handleOpenModal = () => {
         setModalOpen(true);
     }
@@ -33,7 +33,7 @@ const OutcomingItem = ({ el, role }) => {
                 <p>{el.quantity}</p>
             </div>
             <div className={`${s.field} ${s.field_2}`}>
-                <p>{addSpaceNumber(Math.ceil(el.sum))}</p>
+                <p>{addSpaceNumber(el.sum)}</p>
             </div>
 
             <div className={s.manager}>
@@ -41,6 +41,11 @@ const OutcomingItem = ({ el, role }) => {
                     {el.position == 'administrator' && 'Администратор'}
                     {el.position == 'hr-assist' && 'Офис менеджер'}
                     {el.position == 'leader' && 'Руководитель'}
+                    {el.position == 'director' && 'Директор'}
+                    {el.position == 'supervisor' && 'Менеджер по персоналу'}
+                    {el.position == 'accountant' && 'Бухгалтер'}
+                    {el.position == 'hr' && 'HR'}
+                    {el.position == 'mainoperator' && 'Контакт-центр'}
                 </p>
                 <span>{el.person_name}</span>
             </div>

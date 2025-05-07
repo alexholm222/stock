@@ -45,6 +45,10 @@
 .status {
     width: 181px;
     flex-shrink: 0;
+
+    @media(max-width: 1860px) {
+        width: 150px;
+    }
 }
 
 .container {

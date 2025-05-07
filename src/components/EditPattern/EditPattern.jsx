@@ -28,7 +28,7 @@ const EditPattern = ({ setModal, el }) => {
     const listRef = useRef();
     const listRef2 = useRef();
     const dispatch = useDispatch();
-    console.log(el)
+  
     useEffect(() => {
         if (type == 'услуга') {
             setUnit('услуга');

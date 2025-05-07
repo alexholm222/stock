@@ -21,7 +21,7 @@ const WithdrawItem = ({ el }) => {
                 <p>{el.quantity}</p>
             </div>
             <div className={`${s.field} ${s.field_2}`}>
-                <p>{addSpaceNumber(Math.ceil(el.sum))}</p>
+                <p>{addSpaceNumber(el.sum)}</p>
             </div>
 
             <div className={s.manager}>

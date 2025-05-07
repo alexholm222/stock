@@ -5,19 +5,20 @@ import { ReactComponent as IconSort } from '../../image/icon/IconSort.svg';
 import Supplier from './Supplier/Supplier';
 import ModalSuplier from './ModalSupliers/ModalSuplier';
 import SupliersSceleton from './SuppliersSceleton/SupliersSceleton';
+import Tooltip from '../Tooltip/Tooltip';
 
 
-const Suppliers = ({ modalType, setModalType, vendors, load, role }) => {
+const Suppliers = ({ appRef, isskilla, modalType, setModalType, vendors, vendorsFirstLoad, load, role }) => {
     const [anim, setAnim] = useState(false);
     const [listLength, setListLength] = useState(48);
     const [sort, setSort] = useState('');
     const listRef = useRef();
 
-    useEffect(() => {
-        setTimeout(() => {
-            setAnim(true)
-        })
-    })
+      useEffect(() => {
+          setTimeout(() => {
+              setAnim(true)
+          })
+      }, [])
 
     const handleSort = () => {
         if (sort == '') {
@@ -52,14 +53,19 @@ const Suppliers = ({ modalType, setModalType, vendors, load, role }) => {
     }
 
     useEffect(() => {
-        window.addEventListener('scroll', scrollLoad);
-        return () => window.removeEventListener('scroll', scrollLoad)
-    }, [])
+        if (isskilla) {
+            window.addEventListener('scroll', scrollLoad);
+            return () => window.removeEventListener('scroll', scrollLoad)
+        } else {
+            appRef.current.addEventListener('scroll', scrollLoad);
+            return () => appRef.current.removeEventListener('scroll', scrollLoad)
+        }
+
+    }, [appRef])
 
     const scrollLoad = () => {
-        const load = listRef.current.getBoundingClientRect().bottom - window.innerHeight < 1000;
-        console.log(load)
-        load && setListLength(prevState => prevState + 48);
+        const load = isskilla ? listRef.current.getBoundingClientRect().bottom - window.innerHeight < 1000 : listRef.current.getBoundingClientRect().bottom - appRef.current.getBoundingClientRect().bottom < 1000;
+        load && setListLength(prevState => prevState + 24);
     }
 
     return (
@@ -78,15 +84,18 @@ const Suppliers = ({ modalType, setModalType, vendors, load, role }) => {
                 <div className={s.field}>
                     <p>КПП</p>
                 </div>
-                {role == 'administrator' && <div className={s.field}>
+                {(role == 'administrator' || role == 'director') && <div className={s.field}>
+                    <Tooltip text={'Учет по актам подразумевает, что учет в расходах будет записываться по дате подписания акта према-передачи, а не по дате оплаты'}/>
                     <p>{/* Не учитывать в расходах компании */}Учет по актам вместо платежей</p>
+
                 </div>
                 }
             </div>
             {!load && <div className={s.container}>
-                 {vendors.length == 0 && <li className={s.empty}><p>Список поставщиков пуст</p></li>}
+                {vendorsFirstLoad.length == 0 && <li className={s.empty}><p>Список поставщиков пуст</p></li>}
+                {vendors.length == 0 && vendorsFirstLoad.length !== 0 && <li className={s.empty}><p>Ничего не найдено</p></li>}
                 {vendors.slice(0, listLength).map((el, i) =>
-                    <Supplier key={el.id} el={el} role={role}/>
+                    <Supplier key={el.id} el={el} role={role} />
                 )}
             </div>
             }

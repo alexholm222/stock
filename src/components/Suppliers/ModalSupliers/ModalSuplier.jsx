@@ -86,7 +86,6 @@ const ModalSuplier = ({ role, setModal }) => {
         setLoad(true)
         addVendor(name, inn, kpp)
             .then(res => {
-                console.log(res);
                 dispatch(setUpdateSuppliers());
                 setSuccess(true);
                 setLoad(false)
@@ -117,7 +116,7 @@ const ModalSuplier = ({ role, setModal }) => {
         const value = e.target.value;
         value.length <= 12 && setInn(value);
         value.length > 0 && setPrompOpen(true);
-        handleDaData(value);
+        (value.length == 10 || value.length == 12) && handleDaData(value);
 
     }
 
@@ -127,7 +126,7 @@ const ModalSuplier = ({ role, setModal }) => {
         const value = e.target.value;
         value.length > 0 && setPrompOpen(true);
         value.length <= 9 && setKpp(value);
-        handleDaData(value);
+      /*   handleDaData(value); */
     }
 
     const handleFocusName = () => {
@@ -146,7 +145,6 @@ const ModalSuplier = ({ role, setModal }) => {
 
     const handleSelectCompany = (e) => {
         const target = e.currentTarget;
-        console.log(target)
         setPrompOpen(false);
         setName(target.querySelector('.company__name').textContent);
         !check && setInn(target.querySelector('.company__inn').textContent);
@@ -202,7 +200,7 @@ const ModalSuplier = ({ role, setModal }) => {
 
                     <ul ref={promptRef} className={`${s.prompt} ${prompType == 'inn' && s.prompt_2} ${role !== 'administrator' && s.prompt_inn} ${prompOpen && s.prompt_open}`}>
                         {promptList?.map((el) => {
-                            return <li id={`${el.data.inn}${el.data.kpp}`} key={el.data.inn} onClick={handleSelectCompany}>
+                            return <li id={`${el.data.inn}${el.data.kpp}`} key={el.data.inn + el.data.kpp} onClick={handleSelectCompany}>
                                 <p className='company__name'>{el.value}</p>
                                 <div><span>ИНН: <span className='company__inn'>{el.data.inn}</span></span> <span>КПП: <span className='company__kpp'>{el.data.kpp}</span></span></div>
                             </li>

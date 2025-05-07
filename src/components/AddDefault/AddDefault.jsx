@@ -83,7 +83,7 @@ const AddDefault = ({ setModal, el, type }) => {
         if (type == 'payer') {
             payerDefault(el.id, true, defaultCheck)
                 .then(res => {
-                    console.log(res);
+                 
                     setTimeout(() => {
                         dispatch(setUpdatePayers());
                     })
@@ -96,7 +96,7 @@ const AddDefault = ({ setModal, el, type }) => {
         if (type == 'categories') {
             сategoryDefault(el.id, true, defaultCheck, InStockCheck, takeAccountCheck)
                 .then(res => {
-                    console.log(res);
+                  
                     setTimeout(() => {
                         dispatch(setUpdatePayers());
                     })
@@ -112,7 +112,6 @@ const AddDefault = ({ setModal, el, type }) => {
         return () => document.removeEventListener('mousedown', closeModal);
     }, []);
 
-    console.log(el.by_default, type)
 
     return (
         <div className={`${s.overlay} ${anim && s.overlay_anim}`}>

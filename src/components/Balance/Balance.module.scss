@@ -1,12 +1,14 @@
 .balance {
     width: 100%;
     box-sizing: border-box;
+    min-height: 63px;
     border-radius: 8px;
     background-color: var(--color-bg-card);
     padding: 0 20px;
     transition: all 0.15s ease-in-out;
     opacity: 0;
     filter: blur(0.5px);
+    position: relative;
 
     &_anim {
         opacity: 1;
@@ -120,6 +122,24 @@
         flex-shrink: 0;
         margin: 0;
         padding: 0;
+    }
+
+    &__loader {
+        background-color: var(--color-bg-card);
+        width: 100%;
+        padding: 0 20px;
+        box-sizing: border-box;
+        position: absolute;
+        top: 48px;
+        left: 0;
+        visibility: visible;
+        opacity: 1;
+        transition: all 0.15s;
+
+        &_hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
     }
 }
 

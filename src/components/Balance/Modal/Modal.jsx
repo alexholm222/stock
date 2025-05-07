@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setUpdateBalance } from '../../../store/reducer/update/slice';
 import LoaderButton from '../../LoaderButton/LoaderButton';
+import Tooltip from '../../Tooltip/Tooltip';
 //API
 import { sendWithdrawal, sendOutcoming } from '../../../Api/Api';
 
@@ -20,6 +21,7 @@ const Modal = ({ type, setIdModal, el, outcoming }) => {
     const inputRef = useRef();
     const textAreaRef = useRef();
     const dispatch = useDispatch();
+
 
 
     //анимация при открытии страницы
@@ -57,7 +59,7 @@ const Modal = ({ type, setIdModal, el, outcoming }) => {
     }
 
     const handleChangeNum = (e) => {
-        const value = e.target.value;
+        const value = e.target.value
         setNum(value);
         el.quantity < value ? setErr(true) : setErr(false);
     }
@@ -80,13 +82,13 @@ const Modal = ({ type, setIdModal, el, outcoming }) => {
                 })
                 .catch(err => {
                     const data = err.response?.data;
-                    console.log(data)
+             
                     setLoad(false)
-                        if (data.sum_quantity_withdrawal) {
-                            setErrSend(`Изъять можно ${data.all_quantity - data.sum_quantity_withdrawal} ${el.unit}, запрошенно к списанию ${data.sum_quantity_withdrawal} ${el.unit}`);
-                        } else {
-                            setErrSend('При изъятии произошла ошибка, попробуй еще раз');
-                        } 
+                    if (data.sum_quantity_withdrawal) {
+                        setErrSend(`Изъять можно ${data.all_quantity - data.sum_quantity_withdrawal} ${el.unit}, запрошенно к списанию ${data.sum_quantity_withdrawal} ${el.unit}`);
+                    } else {
+                        setErrSend('При изъятии произошла ошибка, попробуй еще раз');
+                    }
                 })
         }
 
@@ -95,14 +97,13 @@ const Modal = ({ type, setIdModal, el, outcoming }) => {
                 .then(res => {
                     const id = res.data.new_stock_stat.stock_id;
                     const statStockId = outcoming.find(el => el.stock_id == id);
-                    console.log(statStockId)
-                    console.log(res);
+                    
                     setSuccess(true);
                     dispatch(setUpdateBalance());
                 })
                 .catch(err => {
                     const data = err.response?.data;
-                    console.log(data)
+                  
                     setLoad(false)
                     if (data.sum_quantity_withdrawal) {
                         setErrSend(`Уже запрошенно к списанию ${data.sum_quantity_withdrawal} ${el.unit}, еще можно списать ${data.all_quantity - data.sum_quantity_withdrawal} ${el.unit}`);
@@ -135,6 +136,14 @@ const Modal = ({ type, setIdModal, el, outcoming }) => {
                     <h2 className={s.title}>
                         {type == 1 && 'Изъятие товара'}
                         {type == 2 && 'Запрос списания'}
+                        <span>
+                            <Tooltip text={type == 1 ? 'Изьять товар - значит забрать со склада в пользование (прим. выдать перчатки грузчикам)' : 'Списывайте товар если он испорчен или сломан, после запроса списания необходимо подтверждение директора'} />
+                        </span>
+
+
+
+                        {/*   {type == 1 && <span>(Забрать со склада в пользование)</span>}
+                        {type == 2 && <span>(Списывайте товар если он испорчен или сломан)</span>} */}
                     </h2>
                     <IconClose onClick={handleCloseModal} />
                 </div>
@@ -152,7 +161,7 @@ const Modal = ({ type, setIdModal, el, outcoming }) => {
                             {type == 2 && 'К списанию'}
                         </p>
                         <div className={`${s.input} ${err && s.input_err}`}>
-                            <input ref={inputRef}  type='number' onChange={handleChangeNum} value={num || ''} className={s.input}></input>
+                            <input ref={inputRef} type='number' onChange={handleChangeNum} value={num || ''} className={s.input}></input>
                             <p>{el.unit}</p>
                         </div>
                     </div>
@@ -162,10 +171,10 @@ const Modal = ({ type, setIdModal, el, outcoming }) => {
                     <textarea ref={textAreaRef} onChange={handleComment} placeholder='Написать основание'></textarea>
                 </div>}
                 {type == 1 && <button disabled={err || num == '' || load ? true : false} onClick={handleConfirm} className={s.button}>Подтвердить
-                    
+
                 </button>}
                 {type == 2 && <button disabled={err || num == '' || load ? true : false} onClick={handleConfirm} className={s.button}>Списать
-                    
+
                 </button>}
                 <span className={s.text_err}>{errSend}</span>
             </div>

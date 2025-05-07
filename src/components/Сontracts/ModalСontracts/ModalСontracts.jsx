@@ -220,7 +220,6 @@ const ModalСontracts = ({ setModal, payers, vendors, vendor, payer, el, type, f
         !check && formData.append('end_date', endDate);
 
         fileForSend.forEach((el, i) => {
-            console.log(el);
             formData.append(`files[${i}]`, el, el.name)
         });
         addContract(formData)
@@ -245,15 +244,12 @@ const ModalСontracts = ({ setModal, payers, vendors, vendor, payer, el, type, f
         formData.append('end_date', check ? '' : endDate);
 
         fileForSend.forEach((el, i) => {
-            console.log(el);
             formData.append(`files[${i}]`, el, el.name)
         });
 
         oldFiles.forEach((item) => formData.append("old_files[]", item))
-        console.log(formData.get('old_files'))
         editContract(formData)
             .then(res => {
-                console.log(res)
                 dispatch(setUpdateContracts());
                 setTimeout(() => {
                     setSave(true);

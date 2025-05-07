@@ -15,7 +15,7 @@ import Error from '../Error/Error';
 import AddDefault from '../AddDefault/AddDefault';
 
 
-const Options = ({ payers, patterns, categories, load, employees, permissions }) => {
+const Options = ({ role, payers, patterns, categories, load, employees, permissions }) => {
     const [anim, setAnim] = useState(false);
     const [modalAddPayer, setModalAddPayer] = useState(false);
     const [modalAddCategory, setModalAddCategory] = useState(false);
@@ -34,7 +34,7 @@ const Options = ({ payers, patterns, categories, load, employees, permissions })
     const [elDelete3, setElDelete3] = useState({});
     const [error, setError] = useState(false);
     const [errorText, setErrorText] = useState('');
-/*     console.log(employees) */
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -78,7 +78,7 @@ const Options = ({ payers, patterns, categories, load, employees, permissions })
         setModalAddPattern(true)
     }
 
-    console.log(employees)
+
 
     return (
         <>
@@ -123,7 +123,7 @@ const Options = ({ payers, patterns, categories, load, employees, permissions })
 
                 </div>
                 <div className={`${s.block} ${s.block_right}`}>
-                    <div className={`${s.block}`}>
+                    {role == 'director' && <div className={`${s.block}`}>
                         <h2 className={s.title}>Доступы сотрудников</h2>
 
                         <div className={`${s.items} ${s.items_cat}`}>
@@ -133,14 +133,14 @@ const Options = ({ payers, patterns, categories, load, employees, permissions })
 
                                 {permissions.map((el) => {
                                     return <div key={el.id} className={s.permission}>
-                                        {el.name == 'show_purchase_for_cashless' && 'Все закупки безнал.'}
-                                        {el.name == 'show_purchase_for_cash' && 'Все закупки нал.'}
+                                        {el.name == 'show_purchase_for_cashless' && 'Видит все закупки безнал.'}
+                                        {el.name == 'show_purchase_for_cash' && 'Видит все закупки нал.'}
                                     </div>
                                 })}
-                                
+
                             </div>
                             {employees.map((el) => {
-                                return <Permissions key={el.id} person_id={el.id} name={`${el.name}`} position={el.position} permission={el.permissions} permissions={permissions}/>
+                                return <Permissions key={el.id} person_id={el.id} name={`${el.name} ${el.surname}`} avatar={el.avatar_mini} position={el.position} permission={el.permissions} permissions={permissions} partnership={el.partnership_name} />
                             })}
                         </div>
 
@@ -152,6 +152,7 @@ const Options = ({ payers, patterns, categories, load, employees, permissions })
                             })}
                         </div>}
                     </div>
+                    }
 
 
                     <div className={`${s.block}`}>

@@ -64,6 +64,10 @@
     padding: 16px 12px;
     box-sizing: border-box;
     height: 100%;
+
+    @media(max-width: 1860px) {
+        width: 150px;
+    }
 }
 
 .container {

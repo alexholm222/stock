@@ -10,7 +10,7 @@ import ModalСontracts from './ModalСontracts/ModalСontracts';
 import ContractsSceleton from './ContractsSceleton/ContractsSceleton';
 
 const Сontracts = ({ modalType, setModalType, contracts, load, vendors, payers }) => {
-    const [anim, setAnim] = useState(false);
+    const [anim, setAnim] = useState(true);
     const [listLength, setListLength] = useState(48);
     const [sort, setSort] = useState('');
     const [sortStatus, setSortStatus] = useState('');
@@ -21,11 +21,11 @@ const Сontracts = ({ modalType, setModalType, contracts, load, vendors, payers 
 
     
 
-    useEffect(() => {
+  /*   useEffect(() => {
         setTimeout(() => {
             setAnim(true)
         });
-    }, []);
+    }, []); */
 
     useEffect(() => {
         window.addEventListener('scroll', scrollLoad);

@@ -13,16 +13,16 @@ const BalanceItem = ({ el, position, percent, outcoming }) => {
     const templateRef = useRef();
     let timeout = null;
 
-    const handleHover = (e) => {
+ /*    const handleHover = (e) => {
         timeout = setTimeout(() => {
             setHeightEl(templateRef?.current?.offsetHeight + 46)
         }, 300)
-    }
-
+    } */
+/* 
     const handleLeave = () => {
         clearTimeout(timeout)
         setHeightEl(64)
-    }
+    } */
 
     const handleOpenModal = (e) => {
         const id = e.currentTarget.id;
@@ -30,7 +30,7 @@ const BalanceItem = ({ el, position, percent, outcoming }) => {
     }
     return (
         <>
-            <li style={{ height: `${heightEl}px` }} onMouseEnter={handleHover} onMouseLeave={handleLeave} className={`${s.item}`}>
+            <li style={{ height: `${heightEl}px` }} /* onMouseEnter={handleHover} onMouseLeave={handleLeave} */ className={`${s.item}`}>
                 <div className={`${s.number}`}>
                     {/* <p>{position < 10 ? '00' : position < 100 ? '0' : ''}{position}</p> */}
                     <p>{el.stock_id}</p>
@@ -46,7 +46,7 @@ const BalanceItem = ({ el, position, percent, outcoming }) => {
                     {el.total_quantity !== 0 && <p>{addSpaceNumber(el.total_quantity)} {el.unit}</p>}
                 </div>
                 <div className={`${s.total}`}>
-                    {el.sum !== 0 && <p>{addSpaceNumber(Math.ceil(el.sum))}</p>}
+                    {el.sum !== 0 && <p>{addSpaceNumber(el.sum)}</p>}
                 </div>
 
                 {el.rate !== 0 && <div className={`${s.position}`}>

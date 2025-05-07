@@ -28,7 +28,7 @@ const AddPayer = ({ setModal }) => {
     const inputRefFocus = useRef();
     const inputRefFocus2 = useRef();
     const dispatch = useDispatch();
-    console.log(paymentType)
+
 
     //анимация при открытии страницы
     useEffect(() => {
@@ -42,10 +42,10 @@ const AddPayer = ({ setModal }) => {
     //Фиксация окна при открытии модалки
     useEffect(() => {
         document.body.style.overflow = "hidden";
-        document.body.style.paddingRight = "8px";
+       /*  document.body.style.paddingRight = "8px"; */
         return () => {
             document.body.style.overflow = "auto";
-            document.body.style.paddingRight = "0";
+            /* document.body.style.paddingRight = "0"; */
         };
     }, []);
 
@@ -72,10 +72,10 @@ const AddPayer = ({ setModal }) => {
         }
     }, [paymentType, nameType, name, inn]);
 
-    useEffect(() => {
+/*     useEffect(() => {
         inputRefFocus.current && inputRefFocus.current.focus();
         inputRefFocus2.current && inputRefFocus2.current.focus();
-    }, [inputRefFocus, inputRefFocus2, paymentType]);
+    }, [inputRefFocus, inputRefFocus2, paymentType]); */
 
 
     //выбор типа плательщика
@@ -137,7 +137,7 @@ const AddPayer = ({ setModal }) => {
 
     const handleSelectCompany = (e) => {
         const target = e.currentTarget;
-        console.log(target)
+     
         setName(target.querySelector('.company__name').textContent);
         setInn(target.querySelector('.company__inn').textContent);
         setPrompOpen(false);
@@ -151,7 +151,7 @@ const AddPayer = ({ setModal }) => {
         if (paymentType == 'nal') {
             addPayerNal(nameType, paymentType, check)
                 .then(res => {
-                    console.log(res);
+               
                     dispatch(setUpdatePayers());
                     setSuccess(true);
                 })
@@ -162,7 +162,7 @@ const AddPayer = ({ setModal }) => {
         if (paymentType == 'beznal') {
             addPayer(name, inn, paymentType, check)
                 .then(res => {
-                    console.log(res);
+             
                     dispatch(setUpdatePayers());
                     setSuccess(true);
                 })

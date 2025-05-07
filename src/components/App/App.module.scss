@@ -1,13 +1,30 @@
 .app {
   background-color: var(--color-bg);
-  min-height: 100vh;
- /*  margin: 0 auto; */
-  margin: 0 auto 0 300px;
-  padding: 40px 0;
-  max-width: 1558px;
-  min-width: 1488px;
-  width: 100%;
-  overflow: hidden;
+  padding: 30px;
+  min-width: 1340px;
+  height: calc(100vh - 64px);
+  overflow: overlay;
+  overflow-y: auto;
+  overflow-x: hidden;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  &_anim {
+    opacity: 1;
+  }
+
+
+
+  &_skilla {
+    min-height: 100vh;
+    height: auto;
+  }
+
+  span {
+    font-weight: 400;
+    line-height: 18px;
+    color: var(--color-text-secondary);
+  }
 }
 
 .title {
@@ -15,6 +32,7 @@
   font-weight: 600;
   line-height: 28px;
   margin-bottom: 16px;
+
 }
 
 .header {
@@ -24,7 +42,7 @@
 }
 
 .container {
-  max-width: 1558px;
+  /* max-width: 1558px; */
   width: 100%;
   display: flex;
   align-items: flex-start;
@@ -54,15 +72,46 @@
     background-color: #0028E5;
   }
 
-  
+
 
   &_anim {
     opacity: 1;
     transform: translateX(0);
-    
+
     &:disabled {
       pointer-events: none;
       opacity: 0.8;
     }
+  }
+}
+
+
+.pro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 100px);
+  width: 100%;
+  max-width: calc(100% - 240px);
+  color: var(--color-text-secondary);
+
+
+  p {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 120px;
+    transition: all 0.2s;
+    font-size: 18px !important;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+
+
+  span {
+    margin: 0 6px;
   }
 }

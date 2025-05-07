@@ -5,20 +5,21 @@ import { ReactComponent as IconCheck } from '../../../image/icon/iconCheck.svg';
 import { updateVendorIgnor } from '../../../Api/Api';
 
 const Supplier = ({ el, role }) => {
-    const [check, setCheck] = useState(el.act == 0 ? false : true);;
+    const [check, setCheck] = useState(el.act == 0 ? false : true);
+
 
     const handleCheck = () => {
         check ? setCheck(false) : setCheck(true)
         if (check) {
             updateVendorIgnor(el.id, false)
                 .then(res => {
-                    console.log(res)
+              
                     setCheck(false)
                 })
         } else {
             updateVendorIgnor(el.id, true)
                 .then(res => {
-                    console.log(res)
+            
                     setCheck(true)
                 })
         }
@@ -35,8 +36,8 @@ const Supplier = ({ el, role }) => {
             <div className={s.field}>
                 <p>{!el.kpp || el.kpp == '' ? '-' : el.kpp}</p>
             </div>
-            {(role == 'administrator' || role == 'director') && <div className={s.field}>
-                <div onClick={handleCheck} className={`${s.checkbox} ${check && s.checkbox_check} ${role !== 'administrator' && s.checkbox_dis}`}>
+            {(role == 'administrator' || role == 'director') && <div style={{justifyContent: 'center'}} className={s.field}>
+                <div onClick={handleCheck} className={`${s.checkbox} ${check && s.checkbox_check} ${role !== 'administrator' && role !== 'director' && s.checkbox_dis}`}>
                     <div>
                         <IconCheck />
                     </div>

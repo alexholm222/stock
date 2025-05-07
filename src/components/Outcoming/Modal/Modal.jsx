@@ -18,7 +18,7 @@ const Modal = ({ setModalOpen, el }) => {
     const modalRef = useRef();
     const textAreaRef = useRef();
     const dispatch = useDispatch();
-    console.log(el.stock_stats_id)
+   
 
     //анимация при открытии страницы
     useEffect(() => {

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import WithdrawItem from './WithdrawItem/WithdrawItem';
 import WithdrawSceleton from './WithdrawSceleton/WithdrawSceleton';
 
-const Withdraw = ({ withdraw, load }) => {
+const Withdraw = ({ appRef, isskilla, withdraw, withdrawFirstLoad, load }) => {
     const [anim, setAnim] = useState(false);
     const [listLength, setListLength] = useState(40);
     const listRef = useRef();
@@ -13,17 +13,24 @@ const Withdraw = ({ withdraw, load }) => {
         setTimeout(() => {
             setAnim(true)
         })
-    })
-
-    useEffect(() => {
-        window.addEventListener('scroll', scrollLoad);
-        return () => window.removeEventListener('scroll', scrollLoad)
     }, [])
 
+    useEffect(() => {
+        if (isskilla) {
+            window.addEventListener('scroll', scrollLoad);
+            return () => window.removeEventListener('scroll', scrollLoad)
+        } else {
+            appRef.current.addEventListener('scroll', scrollLoad);
+            return () => appRef.current.removeEventListener('scroll', scrollLoad)
+        }
+
+    }, [appRef])
+
     const scrollLoad = () => {
-        const load = listRef.current.getBoundingClientRect().bottom - window.innerHeight < 1000;
-        load && setListLength(prevState => prevState + 48);
+        const load = isskilla ? listRef.current.getBoundingClientRect().bottom - window.innerHeight < 1000 : listRef.current.getBoundingClientRect().bottom - appRef.current.getBoundingClientRect().bottom < 1000;
+        load && setListLength(prevState => prevState + 24);
     }
+
     return (
 
         <div ref={listRef} className={`${s.withdraw} ${anim && s.withdraw_anim}`}>
@@ -50,7 +57,8 @@ const Withdraw = ({ withdraw, load }) => {
                 </div>
             </div>
             {!load && <div className={s.container}>
-                {withdraw.length == 0 && <li className={s.empty}><p>Изьятий не было</p></li>}
+                {withdrawFirstLoad.length == 0 && <li className={s.empty}><p>Изьятий не было</p></li>}
+                {withdraw.length == 0 && withdrawFirstLoad.length !== 0 && <li className={s.empty}><p>Ничего не найдено</p></li>}
                 {withdraw.slice(0, listLength).map((el, i) =>
                     <WithdrawItem key={el.id} el={el} />
                 )}

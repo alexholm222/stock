@@ -1,6 +1,7 @@
 import s from './App.module.scss';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ReactComponent as IconPlus } from '../../image/icon/iconPlus.svg';
+import { ReactComponent as IconPro } from '../../image/icon/pro.svg';
 import { useSelector } from 'react-redux';
 import { updateSelector } from '../../store/reducer/update/selector';
 //components
@@ -26,6 +27,8 @@ const Button = ({ type, setModalType, disabled }) => {
     setTimeout(() => {
       setButtonAnim(true)
     })
+
+    return () => setButtonAnim(false)
   }, []);
 
   const handleOpen = (e) => {
@@ -41,7 +44,8 @@ const Button = ({ type, setModalType, disabled }) => {
 
 const App = () => {
   const [theme, setTheme] = useState('light');
-  const [role, setRole] = useState('');
+  const [anim, setAnim] = useState(false);
+  /*   const [role, setRole] = useState(''); */
   const [profile, setProfile] = useState({});
   const [modalType, setModalType] = useState(0);
   const [activeTab, setActiveTab] = useState('1');
@@ -73,7 +77,14 @@ const App = () => {
   const updateContracts = useSelector(updateSelector).updateContracts;
   const updatePayers = useSelector(updateSelector).updatePayers;
   const updatePermissions = useSelector(updateSelector).updatePermissions;
-/*   const role = document.getElementById('root_stock').getAttribute('role'); */
+  const role = document.getElementById('root_stock').getAttribute('role');
+  const ispro = document.getElementById('root_stock').getAttribute('ispro');
+  const isskilla = document.getElementById('root_stock').getAttribute('isskilla') == 1 ? true : false;
+  const appRef = useRef();
+
+  useEffect(() => {
+    setAnim(true)
+  }, [])
 
 
   //Информация о пользователе
@@ -82,7 +93,7 @@ const App = () => {
       .then(res => {
         const data = res.data.data;
         setProfile(data)
-        setRole(data.position)
+        /* setRole(data.position) */
       })
       .catch(err => console.log(err))
   }, []);
@@ -221,8 +232,8 @@ const App = () => {
     getVendors()
       .then(res => {
         const vendorsOnlyWithInn = res.data.filter(el => el.inn !== '' && el.inn !== null);
-        const vendors = (role =='administrator' || role == 'director') ? res.data : vendorsOnlyWithInn;
-        console.log(vendors)
+        const vendors = (role == 'administrator' || role == 'director') ? res.data : vendorsOnlyWithInn;
+     
         setVendorsFirstLoad([...vendors]);
         setVendors(vendors);
         setTimeout(() => {
@@ -237,13 +248,13 @@ const App = () => {
 
   //Получаю список плательщиков //Список шаблнов // Список категорий
   useEffect(() => {
-    if ((role =='administrator' || role == 'director')) {
+    if ((role == 'administrator' || role == 'director')) {
       Promise.all([getPayersList(), getPatterns(), getCategories()])
         .then(([res1, res2, res3]) => {
           const payers = res1.data;
           const patterns = res2.data;
           const categories = res3.data;
-          console.log(payers, patterns, categories);
+         
 
           payers.sort((a, b) => {
             if (a.by_default > b.by_default) {
@@ -339,30 +350,41 @@ const App = () => {
 
   }, [updatePermissions])
 
+  const handlePro = () => {
+    document?.getElementById('pro-open')?.click();
+  }
+
 
   return (
-    <div className={s.app}>
-      <h2 className={s.title}>Склад  {profile.name} <span>{role}</span></h2>
-      <div className={s.header}>
-        {activeTab == 1 && <Search setList={setStockRemains} list={stockRemainsFirstLoad} load={load} activeTab={activeTab} />}
-        {activeTab == 2 && <Search setList={setOutcoming} list={outcomingFirstLoad} load={load2} activeTab={activeTab} />}
-        {activeTab == 3 && <Search setList={setWithdraw} list={withdrawFirstLoad} load={load3} activeTab={activeTab} />}
-        {activeTab == 4 && <Search setList={setContracts} list={contractsFirstLoad} type={4} load={load4} activeTab={activeTab} />}
-        {activeTab == 5 && <Search setList={setVendors} list={vendorsFirstLoad} load={load5} activeTab={activeTab} />}
-        {activeTab == 6 && <Search type={6} activeTab={activeTab} />}
-        <Tabs setActiveTab={setActiveTab} activeTab={activeTab} role={role} />
-        {activeTab == 4 && <Button type={4} setModalType={setModalType} disabled={!load6 && !load4 ? false : true} />}
-        {activeTab == 5 && <Button type={5} setModalType={setModalType} disabled={load5} />}
+    <>
+      {(ispro == 1 || isskilla) && <div ref={appRef} className={`${s.app} ${isskilla && s.app_skilla} ${anim && s.app_anim}`}>
+        <h2 className={s.title}>Склад</h2>
+        <div className={s.header}>
+          {activeTab == 1 && <Search setList={setStockRemains} list={stockRemainsFirstLoad} load={load} activeTab={activeTab} />}
+          {activeTab == 2 && <Search setList={setOutcoming} list={outcomingFirstLoad} load={load2} activeTab={activeTab} />}
+          {activeTab == 3 && <Search setList={setWithdraw} list={withdrawFirstLoad} load={load3} activeTab={activeTab} />}
+          {activeTab == 4 && <Search setList={setContracts} list={contractsFirstLoad} type={4} load={load4} activeTab={activeTab} />}
+          {activeTab == 5 && <Search setList={setVendors} list={vendorsFirstLoad} load={load5} activeTab={activeTab} />}
+          {activeTab == 6 && <Search type={6} activeTab={activeTab} />}
+          <Tabs setActiveTab={setActiveTab} activeTab={activeTab} role={role} />
+          {activeTab == 4 && <Button type={4} setModalType={setModalType} disabled={!load6 && !load4 ? false : true} />}
+          {activeTab == 5 && <Button type={5} setModalType={setModalType} disabled={load5} />}
 
-      </div>
-      {activeTab == 1 && <Balance stockRemains={stockRemains} outcoming={outcoming} load={load} sumRemains={sumRemains} />}
-      {activeTab == 2 && <Outcoming role={role} outcoming={[...outcoming].reverse()} load={load2} />}
-      {activeTab == 3 && <Withdraw withdraw={[...withdraw].reverse()} load={load3} />}
-      {activeTab == 4 && <Сontracts modalType={modalType} setModalType={setModalType} contracts={contracts} load={load4} vendors={vendorsFirstLoad} payers={payers} />}
-      {activeTab == 5 && <Suppliers role={role} modalType={modalType} setModalType={setModalType} vendors={[...vendors].reverse()} load={load5} />}
-      {activeTab == 6 && (role =='administrator' || role == 'director') && <Options load={load6} payers={payers} patterns={patterns} categories={categories} employees={employees} permissions={permissions} />}
-      {errorLoad && <Error setErrorLoad={setErrorLoad} text={'При загрузке данных произошла ошибка, попробуй перезагрузить страницу'} />}
-    </div>
+        </div>
+        {activeTab == 1 && <Balance appRef={appRef} isskilla={isskilla} stockRemainsFirstLoad={stockRemainsFirstLoad} stockRemains={stockRemains} outcoming={outcoming} load={load} sumRemains={sumRemains} />}
+        {activeTab == 2 && <Outcoming appRef={appRef} isskilla={isskilla} role={role} outcomingFirstLoad={outcomingFirstLoad} outcoming={[...outcoming].reverse()} load={load2} />}
+        {activeTab == 3 && <Withdraw appRef={appRef} isskilla={isskilla} withdrawFirstLoad={withdrawFirstLoad} withdraw={[...withdraw].reverse()} load={load3} />}
+        {activeTab == 4 && <Сontracts modalType={modalType} setModalType={setModalType} contracts={contracts} load={load4} vendors={vendorsFirstLoad} payers={payers} />}
+        {activeTab == 5 && <Suppliers appRef={appRef} isskilla={isskilla} role={role} modalType={modalType} setModalType={setModalType} vendorsFirstLoad={vendorsFirstLoad} vendors={[...vendors].reverse()} load={load5} />}
+        {activeTab == 6 && (role == 'administrator' || role == 'director') && <Options role={role} load={load6} payers={payers} patterns={patterns} categories={categories} employees={employees} permissions={permissions} />}
+        {errorLoad && <Error setErrorLoad={setErrorLoad} text={'При загрузке данных произошла ошибка, попробуй перезагрузить страницу'} />}
+      </div>}
+
+      {(ispro == 0 && !isskilla) && <div className={s.pro}>
+        <p onClick={handlePro}>Склад доступен только для обладателей <span><IconPro /></span> версии</p>
+      </div>}
+    </>
+
   );
 }
 

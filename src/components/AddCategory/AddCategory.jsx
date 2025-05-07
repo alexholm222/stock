@@ -81,12 +81,11 @@ const AddCategory = ({ setModal }) => {
         takeAccountCheck ? setTakeAccountCheck(false) : setTakeAccountCheck(true)
     }
 
-    console.log(defaultCheck, InStockCheck, takeAccountCheck)
 
     const handleConfirm = () => {
         addCategory(name, defaultCheck, InStockCheck, takeAccountCheck)
             .then(res => {
-                console.log(res);
+
                 dispatch(setUpdatePayers());
                 setSuccess(true);
             })

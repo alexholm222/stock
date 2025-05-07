@@ -6,27 +6,32 @@ import BalanceItemSceleton from './BalanceItemSceleton/BalanceItemSceleton';
 import { addSpaceNumber } from '../../utils/addSpaceNumber';
 import Loader from '../Loader/Loader';
 
-const Balance = ({ stockRemains, load, sumRemains, outcoming }) => {
+const Balance = ({ appRef, isskilla, stockRemainsFirstLoad, stockRemains, load, sumRemains, outcoming }) => {
     const [anim, setAnim] = useState(false);
     const [listLength, setListLength] = useState(24);
     const [sort, setSort] = useState('');
     const [sortStatus, setSortStatus] = useState('');
     const listRef = useRef();
-   console.log(stockRemains)
+  
     useEffect(() => {
         setTimeout(() => {
             setAnim(true)
         })
-    });
+    }, []);
 
     useEffect(() => {
-        window.addEventListener('scroll', scrollLoad);
-        return () => window.removeEventListener('scroll', scrollLoad)
-    }, [])
+        if(isskilla) {
+            window.addEventListener('scroll', scrollLoad);
+            return () => window.removeEventListener('scroll', scrollLoad)
+        } else {
+            appRef.current.addEventListener('scroll', scrollLoad);
+            return () => appRef.current.removeEventListener('scroll', scrollLoad)
+        }
+       
+    }, [appRef])
 
     const scrollLoad = () => {
-        const load = listRef.current.getBoundingClientRect().bottom - window.innerHeight < 1000;
-        console.log(load)
+        const load = isskilla ?  listRef.current.getBoundingClientRect().bottom - window.innerHeight < 1000 : listRef.current.getBoundingClientRect().bottom - appRef.current.getBoundingClientRect().bottom < 1000;
         load && setListLength(prevState => prevState + 24);
     }
 
@@ -98,7 +103,7 @@ const Balance = ({ stockRemains, load, sumRemains, outcoming }) => {
             stockRemains.sort((a, b) => {
                 const first = a.rate == 0 ? 0 : a.quantity / a.rate;
                 const second = b.rate == 0 ? 0 : b.quantity / b.rate;
-                console.log(first)
+             
                 if (first > second) {
                     return -1;
                 }
@@ -147,14 +152,15 @@ const Balance = ({ stockRemains, load, sumRemains, outcoming }) => {
                 </div>
             </div>
             {!load && <ul className={s.container}>
-                {stockRemains.length == 0 && <li className={s.empty}><p>На склад не добавлены позиции</p></li>}
+                {stockRemainsFirstLoad.length == 0 && <li className={s.empty}><p>На склад нет позиций (здесь появятся товары после проведения закупки)</p></li>}
+                {stockRemains.length == 0 && stockRemainsFirstLoad.length !== 0 && <li className={s.empty}><p>Ничего не найдено</p></li>}
                 {stockRemains.slice(0, listLength).map((el, i) =>
                     <BalanceItem key={el.stock_id} el={el} position={i + 1} percent={el.quantity / (el.rate * 3)} outcoming={outcoming}/>
                 )}
             </ul>
             }
 
-            {load && <ul className={s.container}>
+            { <ul className={`${s.container} ${s.container__loader} ${!load && s.container__loader_hidden}`}>
                 {[...Array(24)].map((el, i) =>
                     <BalanceItemSceleton key={i} />
                 )}

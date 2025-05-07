@@ -46,7 +46,7 @@ const DeleteModal = ({ setModal, elDelete, type, setError, setErrorText }) => {
         if (type == 'payer') {
             payerDelete(elDelete.id)
                 .then(res => {
-                    console.log(res.status);
+                   
                     setAnim(false);
                     dispatch(setUpdatePayers());
                     setTimeout(() => {
@@ -68,7 +68,7 @@ const DeleteModal = ({ setModal, elDelete, type, setError, setErrorText }) => {
         if (type == 'category') {
             сategoryDelete(elDelete.id)
                 .then(res => {
-                    console.log(res);
+                  
                     setAnim(false);
                     dispatch(setUpdatePayers());
                     setTimeout(() => {
@@ -90,7 +90,7 @@ const DeleteModal = ({ setModal, elDelete, type, setError, setErrorText }) => {
         if (type == 'pattern') {
             patternDelete(elDelete.id)
                 .then(res => {
-                    console.log(res);
+           
                     setAnim(false);
                     dispatch(setUpdatePayers());
                     setTimeout(() => {

@@ -2,11 +2,20 @@
 @import './vendor/fonts/fonts.css';
 @import './vendor/constants.scss';
 
+
 body {
   font-family: 'Inter', 'sans-serif';
+  font-size: 16px;
   font-style: normal;
   color: var(--color-text-primary);
-  background-color: var(--color-bg);
+  background-color: #F1F4F9;
+ 
+ 
+}
+
+#root_stock {
+  background-color: #F1F4F9;
+  color: var(--color-text-primary);
 }
 
 img {
@@ -39,13 +48,13 @@ p {
 h2 {
   margin: 0;
   padding: 0;
+  height: auto;
+  color: var(--color-text-primary);
+  text-transform: none;
+  font-family: 'Inter', 'sans-serif' !important;
 }
 
-span {
-  font-weight: 400;
-  line-height: 18px;
-  color: var(--color-text-secondary);
-}
+
 
 canvas {
   width: 100%;
@@ -55,6 +64,7 @@ canvas {
 
 div {
   box-sizing: border-box;
+
 }
 
 input {
@@ -86,8 +96,23 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: var(--color-button-disabled);
+  background-color: var(--color-bg-disabled);
   border-radius: 20px;
+  border: 1px solid var(--color-bg-disabled);
+}
+
+div::-webkit-scrollbar {
+  width: 8px;
+}
+
+div::-webkit-scrollbar-track {
+  background: var(--color-bg-car);
+}
+
+div::-webkit-scrollbar-thumb {
+  background-color: var(--color-bg-disabled);
+  border-radius: 20px;
+  border: 1px solid var(--color-bg-disabled);
 }
 
 textarea::-webkit-scrollbar {
@@ -95,13 +120,27 @@ textarea::-webkit-scrollbar {
 }
 
 textarea::-webkit-scrollbar-track {
-  background: #F8FAFD;
+  background: var(--color-bg-car);
 }
 
 textarea::-webkit-scrollbar-thumb {
-  background-color: var(--color-button-disabled);
+  background-color: var(--color-bg-disabled);
   border-radius: 20px;
-  border: 1px solid #F8FAFD;
+  border: 1px solid var(--color-bg-disabled);
+}
+
+ul::-webkit-scrollbar {
+  width: 8px;
+}
+
+ul::-webkit-scrollbar-track {
+  background: var(--color-bg-card);
+}
+
+ul::-webkit-scrollbar-thumb {
+  background-color: var(--color-bg-disabled);
+  border-radius: 20px;
+  border: 1px solid var(--color-bg-disabled);
 }
 
 html {
