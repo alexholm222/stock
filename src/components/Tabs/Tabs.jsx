@@ -4,12 +4,12 @@ import { Link, useLocation } from 'react-router-dom';
 
 
 const tabs = [
-    { id: 1, name: 'Текущие остатки', link: '/stock/' },
-    { id: 2, name: 'Списание', link: '/stock/?withdraw' },
-    { id: 3, name: 'Журнал изьятий', link: '/stock/?outcoming' },
+    { id: 1, name: 'Текущие остатки', link: '/new/purchases/stock/' },
+    { id: 2, name: 'Списание', link: '/new/purchases/stock/withdraw' },
+    { id: 3, name: 'Журнал изьятий', link: '/new/purchases/stock/outcoming' },
   /*   { id: 4, name: 'Договоры с поставщиками', link: '/stock/contracts' }, */
-    { id: 5, name: 'Поставщики', link: '/stock/?vendors' },
-    { id: 6, name: 'Настройки', link: '/stock/?options' }
+    { id: 5, name: 'Поставщики', link: '/new/purchases/stock/vendors' },
+    { id: 6, name: 'Настройки', link: '/new/purchases/stock/options' }
 ];
 
 const Tab = ({ tab, link, id, active }) => {

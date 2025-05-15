@@ -1,8 +1,8 @@
 .app {
   background-color: var(--color-bg);
-  padding: 30px;
+  padding: 40px;
   min-width: 1340px;
-  height: calc(100vh - 64px);
+  height: calc(100vh/*  - 64px */);
   overflow: overlay;
   overflow-y: auto;
   overflow-x: hidden;

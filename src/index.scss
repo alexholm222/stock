@@ -1,5 +1,5 @@
-@import './vendor/normalize.css';
-@import './vendor/fonts/fonts.css';
+/* @import './vendor/normalize.css';
+@import './vendor/fonts/fonts.css'; */
 @import './vendor/constants.scss';
 
 
@@ -87,7 +87,7 @@ input::-webkit-inner-spin-button {
   /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
   width: 8px;
 }
 
@@ -113,7 +113,7 @@ div::-webkit-scrollbar-thumb {
   background-color: var(--color-bg-disabled);
   border-radius: 20px;
   border: 1px solid var(--color-bg-disabled);
-}
+} */
 
 textarea::-webkit-scrollbar {
   width: 4px;
@@ -129,7 +129,7 @@ textarea::-webkit-scrollbar-thumb {
   border: 1px solid var(--color-bg-disabled);
 }
 
-ul::-webkit-scrollbar {
+/* ul::-webkit-scrollbar {
   width: 8px;
 }
 
@@ -145,9 +145,9 @@ ul::-webkit-scrollbar-thumb {
 
 html {
   scroll-behavior: smooth;
-}
+} */
 
-ul::-webkit-scrollbar {
+/* ul::-webkit-scrollbar {
   visibility: hidden;
   transition: all 0.2;
   width: 3px;
@@ -167,4 +167,4 @@ ul::-webkit-scrollbar-thumb {
   background-color: var(--color-button-disabled);
   border-radius: 4px;
 
-}
+} */
